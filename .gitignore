@@ -7,5 +7,6 @@ quickstart_complete/nada_programs/target
 .env
 .DS_Store
 *.key
+.idea
 
 .venv
