@@ -20,6 +20,7 @@ from helpers.nillion_client_helper import (
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
+
 # 1 Party running simple addition on 1 stored secret and 1 compute time secret
 async def main():
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
@@ -33,7 +34,7 @@ async def main():
     user_id = client.user_id
     party_name = "Party1"
     program_name = "addition_simple"
-    program_mir_path = f"../../programs-compiled/{program_name}.nada.bin"
+    program_mir_path = f"../nada_programs/target/{program_name}.nada.bin"
 
     # Create payments config and set up Nillion wallet with a private key to pay for operations
     payments_config = create_payments_config(chain_id, grpc_endpoint)
@@ -69,7 +70,7 @@ async def main():
     print("-----STORE SECRETS")
 
     # Create a secret
-    stored_secret = nillion.Secrets(
+    stored_secret = nillion.NadaValues(
         {
             "my_int1": nillion.SecretInteger(500),
         }
@@ -102,7 +103,9 @@ async def main():
     compute_bindings.add_output_party(party_name, party_id)
 
     # Create a computation time secret to use
-    computation_time_secrets = nillion.Secrets({"my_int2": nillion.SecretInteger(10)})
+    computation_time_secrets = nillion.NadaValues(
+        {"my_int2": nillion.SecretInteger(10)}
+    )
 
     # Get cost quote, then pay for operation to compute
     receipt_compute = await pay(
@@ -115,12 +118,11 @@ async def main():
 
     # Compute, passing all params including the receipt that shows proof of payment
     uuid = await client.compute(
-        cluster_id=cluster_id,
-        bindings=compute_bindings,
-        store_ids=[store_id],
-        secrets=computation_time_secrets,
-        receipt=receipt_compute,
-        public_variables=nillion.PublicVariables({}),
+        cluster_id,
+        compute_bindings,
+        [store_id],
+        computation_time_secrets,
+        receipt_compute,
     )
     print(f"Computing using program {program_id}")
     print(f"Use secret store_id: {store_id}")

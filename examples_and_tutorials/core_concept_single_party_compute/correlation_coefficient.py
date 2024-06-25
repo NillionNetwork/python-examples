@@ -32,6 +32,7 @@ from helpers.nillion_client_helper import (
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
+
 # 1 Party running simple addition on 1 stored secret and 1 compute time secret
 async def main():
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
@@ -47,7 +48,7 @@ async def main():
     party_1_name = "Party1"
     out_party_name = "OutParty"
     program_name = "correlation_coefficient"
-    program_mir_path = f"../../programs-compiled/{program_name}.nada.bin"
+    program_mir_path = f"../nada_programs/target/{program_name}.nada.bin"
 
     payments_config = create_payments_config(chain_id, grpc_endpoint)
     payments_client = LedgerClient(payments_config)
@@ -102,8 +103,8 @@ async def main():
         )
 
     # Parties store the secrets
-    party_0_secrets = nillion.Secrets(party_0_dict)
-    party_1_secrets = nillion.Secrets(party_1_dict)
+    party_0_secrets = nillion.NadaValues(party_0_dict)
+    party_1_secrets = nillion.NadaValues(party_1_dict)
 
     # Give core_concept_permissions to owner to compute with my vote
     secret_permissions = nillion.Permissions.default_for_user(user_id)
@@ -152,7 +153,7 @@ async def main():
     compute_bindings.add_input_party(party_0_name, party_id)
     compute_bindings.add_input_party(party_1_name, party_id)
     compute_bindings.add_output_party(out_party_name, party_id)
-    computation_time_secrets = nillion.Secrets({})
+    computation_time_secrets = nillion.NadaValues({})
 
     print(f"Computing using program {program_id}")
     print(f"Use secret store_id: {store_id}")
@@ -171,8 +172,7 @@ async def main():
         compute_bindings,
         store_ids,
         computation_time_secrets,
-        nillion.PublicVariables({}),
-        receipt_compute
+        receipt_compute,
     )
 
     # Print compute result

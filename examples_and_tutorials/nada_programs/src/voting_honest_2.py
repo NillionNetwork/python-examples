@@ -4,10 +4,12 @@ PROGRAM 2
 nr of voters: m = 5
 nr of candidates: n = 3
 """
+
 from nada_dsl import *
 
+
 def nada_main():
-    
+
     # 0. Compiled-time constants
     nr_voters = 3
     nr_candidates = 2
@@ -23,7 +25,11 @@ def nada_main():
     for c in range(nr_candidates):
         votes_per_candidate.append([])
         for v in range(nr_voters):
-            votes_per_candidate[c].append(SecretUnsignedInteger(Input(name="v" + str(v) + "_c" + str(c), party=voters[v])))
+            votes_per_candidate[c].append(
+                SecretUnsignedInteger(
+                    Input(name="v" + str(v) + "_c" + str(c), party=voters[v])
+                )
+            )
 
     # 3. Computation
     results = []

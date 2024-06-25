@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
@@ -8,14 +9,11 @@ CONFIG = {
     "nr_voters": 3,
 }
 
-CONFIG_CANDIDATES=[
-    "Dave",
-    "Emma"
-]
+CONFIG_CANDIDATES = ["Dave", "Emma"]
 
 
 # Alice
-CONFIG_PARTY_1={
+CONFIG_PARTY_1 = {
     "seed": "alice_seed",
     "party_name": "Alice",
     "party_role": "Voter0",
@@ -26,7 +24,7 @@ CONFIG_PARTY_1={
 }
 
 # Bob and Charlie
-CONFIG_N_PARTIES=[
+CONFIG_N_PARTIES = [
     {
         "seed": "bob_seed",
         "party_name": "Bob",

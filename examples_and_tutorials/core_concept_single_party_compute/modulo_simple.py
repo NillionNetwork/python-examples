@@ -21,6 +21,7 @@ from helpers.nillion_client_helper import (
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
+
 # 1 Party running modulo on 1 stored secrets and a public variable
 async def main():
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
@@ -34,7 +35,7 @@ async def main():
     user_id = client.user_id
     party_name = "Party1"
     program_name = "modulo_simple"
-    program_mir_path = f"../../programs-compiled/{program_name}.nada.bin"
+    program_mir_path = f"../nada_programs/target/{program_name}.nada.bin"
 
     payments_config = create_payments_config(chain_id, grpc_endpoint)
     payments_client = LedgerClient(payments_config)
@@ -66,7 +67,7 @@ async def main():
     permissions.add_compute_permissions({client.user_id: {program_id}})
 
     # Create a secret
-    stored_secret = nillion.Secrets(
+    stored_secret = nillion.NadaValues(
         {
             "my_int1": nillion.SecretInteger(37),
         }
@@ -93,7 +94,7 @@ async def main():
     print(f"Computing using program {program_id}")
     print(f"Use secret store_id: {store_id}")
 
-    computation_time_secrets = nillion.Secrets({})
+    computation_time_secrets = nillion.NadaValues({})
 
     # Pay for the compute
     receipt_compute = await pay(
@@ -104,16 +105,13 @@ async def main():
         cluster_id,
     )
 
-    public_variables = nillion.PublicVariables(
-        {"public_my_int2": nillion.PublicInteger(12)}
-    )
+    public_variables = nillion.NadaValues({"public_my_int2": nillion.Integer(12)})
 
     # Compute on the secret
     compute_id = await client.compute(
         cluster_id,
         compute_bindings,
         [store_id],
-        computation_time_secrets,
         public_variables,
         receipt_compute,
     )

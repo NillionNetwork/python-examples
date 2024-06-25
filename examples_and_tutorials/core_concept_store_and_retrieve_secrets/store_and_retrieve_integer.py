@@ -10,11 +10,16 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-from helpers.nillion_client_helper import create_nillion_client, pay, create_payments_config
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+from helpers.nillion_client_helper import (
+    create_nillion_client,
+    pay,
+    create_payments_config,
+)
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
+
 
 # Store and retrieve a SecretInteger using the Python Client
 async def main():
@@ -30,25 +35,32 @@ async def main():
     payments_config = create_payments_config(chain_id, grpc_endpoint)
     payments_client = LedgerClient(payments_config)
     payments_wallet = LocalWallet(
-        PrivateKey(bytes.fromhex(os.getenv("NILLION_NILCHAIN_PRIVATE_KEY_0"))), prefix="nillion"
+        PrivateKey(bytes.fromhex(os.getenv("NILLION_NILCHAIN_PRIVATE_KEY_0"))),
+        prefix="nillion",
     )
 
     ##### STORE SECRET
-    print('-----STORE SECRET')
+    print("-----STORE SECRET")
 
     # Create a SecretInteger
     secret_name = "my_int1"
     secret_value = 100
-    stored_secret = nillion.Secrets({
-        secret_name: nillion.SecretInteger(secret_value),
-    })
+    stored_secret = nillion.NadaValues(
+        {
+            secret_name: nillion.SecretInteger(secret_value),
+        }
+    )
 
-    # Create a permissions object to attach to the stored secret 
+    # Create a permissions object to attach to the stored secret
     permissions = nillion.Permissions.default_for_user(client.user_id)
 
     # Get cost quote, then pay for operation to store the secret
     receipt_store = await pay(
-        client, nillion.Operation.store_values(stored_secret), payments_wallet, payments_client, cluster_id
+        client,
+        nillion.Operation.store_values(stored_secret),
+        payments_wallet,
+        payments_client,
+        cluster_id,
     )
 
     # Store a secret, passing in the receipt that shows proof of payment
@@ -59,22 +71,30 @@ async def main():
     print(f"The secret is stored at store_id: {store_id}")
 
     ##### RETRIEVE SECRET
-    print('-----RETRIEVE SECRET')
+    print("-----RETRIEVE SECRET")
 
     # Get cost quote, then pay for operation to retrieve the secret
     receipt_retrieve = await pay(
-        client, nillion.Operation.retrieve_value(), payments_wallet, payments_client, cluster_id
+        client,
+        nillion.Operation.retrieve_value(),
+        payments_wallet,
+        payments_client,
+        cluster_id,
     )
 
-    result_tuple = await client.retrieve_value(cluster_id, store_id, secret_name, receipt_retrieve)
+    result_tuple = await client.retrieve_value(
+        cluster_id, store_id, secret_name, receipt_retrieve
+    )
     print(f"The secret name as a uuid is {result_tuple[0]}")
     print(f"The secret value is {result_tuple[1].value}")
     return result_tuple[1].value
 
+
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 @pytest.mark.asyncio
 async def test_main():
     result = await main()
-    assert result == 'gm, builder!'
+    assert result == "gm, builder!"

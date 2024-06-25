@@ -24,6 +24,7 @@ from helpers.nillion_keypath_helper import getUserKeyFromFile, getNodeKeyFromFil
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
+
 # Bob and Charlie store their salaries in the network
 async def main(args=None):
     parser = argparse.ArgumentParser(
@@ -73,7 +74,7 @@ async def main(args=None):
         secret_value = party_info["secret_value"]
 
         # Create a secret for the current party
-        stored_secret = nillion.Secrets(
+        stored_secret = nillion.NadaValues(
             {secret_name: nillion.SecretInteger(secret_value)}
         )
 

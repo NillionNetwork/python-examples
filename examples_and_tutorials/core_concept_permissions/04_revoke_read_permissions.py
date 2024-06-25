@@ -11,7 +11,7 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from helpers.nillion_client_helper import (
     create_nillion_client,
     pay,
@@ -21,7 +21,8 @@ from helpers.nillion_client_helper import (
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
-async def main(args = None):
+
+async def main(args=None):
     parser = argparse.ArgumentParser(
         description="Revoke user read/retrieve permissions from a secret on the Nillion network"
     )
@@ -66,7 +67,7 @@ async def main(args = None):
     )
     if result != "not allowed":
         raise Exception("failed to create valid permissions object")
-    
+
     # Get cost quote, then pay for operation to update permissions
     receipt_update_permissions = await pay(
         writer,
@@ -78,15 +79,24 @@ async def main(args = None):
 
     # Update the permission
     print(f"ℹ️ Updating permissions for secret: {args.store_id}.")
-    print(f"ℹ️ Reset permissions so that user id {args.revoked_user_id} is {result} to retrieve object.", file=sys.stderr)
-    await writer.update_permissions( cluster_id, args.store_id , new_permissions, receipt_update_permissions)
+    print(
+        f"ℹ️ Reset permissions so that user id {args.revoked_user_id} is {result} to retrieve object.",
+        file=sys.stderr,
+    )
+    await writer.update_permissions(
+        cluster_id, args.store_id, new_permissions, receipt_update_permissions
+    )
 
-    print("\n\nRun the following command to test that permissions have been properly revoked")
+    print(
+        "\n\nRun the following command to test that permissions have been properly revoked"
+    )
     print(f"\n📋  python3 05_test_revoked_permissions.py  --store_id {args.store_id}")
     return args.store_id
 
+
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 @pytest.mark.asyncio
 async def test_main():

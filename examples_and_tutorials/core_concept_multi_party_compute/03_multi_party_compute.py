@@ -21,13 +21,10 @@ from helpers.nillion_client_helper import (
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
-from config import (
-    CONFIG_PROGRAM_NAME,
-    CONFIG_PARTY_1,
-    CONFIG_N_PARTIES
-)
+from config import CONFIG_PROGRAM_NAME, CONFIG_PARTY_1, CONFIG_N_PARTIES
 
-async def main(args = None):
+
+async def main(args=None):
     parser = argparse.ArgumentParser(
         description="Create a secret on the Nillion network with set read/retrieve permissions"
     )
@@ -42,7 +39,7 @@ async def main(args = None):
     parser.add_argument(
         "--party_ids_to_store_ids",
         required=True,
-        nargs='+',
+        nargs="+",
         type=str,
         help="List of partyid:storeid pairs of the secrets, with each pair separated by a space",
     )
@@ -55,10 +52,7 @@ async def main(args = None):
 
     # 1st party computes on secrets
     seed = CONFIG_PARTY_1["seed"]
-    client_1 = create_nillion_client(
-        UserKey.from_seed(seed),
-        NodeKey.from_seed(seed)
-    )
+    client_1 = create_nillion_client(UserKey.from_seed(seed), NodeKey.from_seed(seed))
     user_id_1 = client_1.user_id
     party_id_1 = client_1.party_id
 
@@ -70,7 +64,7 @@ async def main(args = None):
         prefix="nillion",
     )
 
-    program_id=f"{user_id_1}/{CONFIG_PROGRAM_NAME}"
+    program_id = f"{user_id_1}/{CONFIG_PROGRAM_NAME}"
 
     # Bind the parties in the computation to the client to set inputs and output parties
     compute_bindings = nillion.ProgramBindings(program_id)
@@ -82,16 +76,16 @@ async def main(args = None):
     print(f"Party 1 secret store_id: {store_id_1}")
 
     party_ids_to_store_ids = {}
-    i=0
+    i = 0
     for pair in args.party_ids_to_store_ids:
-        party_id, store_id = pair.split(':')
-        party_name = CONFIG_N_PARTIES[i]['party_name']
+        party_id, store_id = pair.split(":")
+        party_name = CONFIG_N_PARTIES[i]["party_name"]
         compute_bindings.add_input_party(party_name, party_id)
         party_ids_to_store_ids[party_id] = store_id
-        i=i+1
+        i = i + 1
 
-    compute_time_secrets = nillion.Secrets({})
-    
+    compute_time_secrets = nillion.NadaValues({})
+
     # Get cost quote, then pay for operation to compute
     receipt_compute = await pay(
         client_1,
@@ -100,14 +94,13 @@ async def main(args = None):
         payments_client,
         cluster_id,
     )
-    
+
     # Compute on the secret with all store ids. Note that there are no compute time secrets or public variables
     compute_id = await client_1.compute(
         cluster_id,
         compute_bindings,
         [store_id_1] + list(party_ids_to_store_ids.values()),
         compute_time_secrets,
-        nillion.PublicVariables({}),
         receipt_compute,
     )
 
@@ -119,6 +112,7 @@ async def main(args = None):
             print(f"✅  Compute complete for compute_id {compute_event.uuid}")
             print(f"🖥️  The result is {compute_event.result.value}")
             return compute_event.result.value
-    
+
+
 if __name__ == "__main__":
     asyncio.run(main())

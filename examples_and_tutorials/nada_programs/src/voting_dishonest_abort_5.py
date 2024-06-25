@@ -4,7 +4,9 @@ PROGRAM 5
 nr of voters: m = 3
 nr of candidates: n = 2
 """
+
 from nada_dsl import *
+
 
 def initialize_voters(nr_voters):
     """
@@ -22,6 +24,7 @@ def initialize_voters(nr_voters):
 
     return voters
 
+
 def inputs_initialization(nr_voters, nr_candidates, voters):
     """
     Initializes the input for each candidate, collecting votes from each voter securely.
@@ -37,9 +40,14 @@ def inputs_initialization(nr_voters, nr_candidates, voters):
     for c in range(nr_candidates):
         votes_per_candidate.append([])
         for v in range(nr_voters):
-            votes_per_candidate[c].append(SecretUnsignedInteger(Input(name="v" + str(v) + "_c" + str(c), party=voters[v])))
+            votes_per_candidate[c].append(
+                SecretUnsignedInteger(
+                    Input(name="v" + str(v) + "_c" + str(c), party=voters[v])
+                )
+            )
 
     return votes_per_candidate
+
 
 def count_votes(nr_voters, nr_candidates, votes_per_candidate, outparty):
     """
@@ -61,6 +69,7 @@ def count_votes(nr_voters, nr_candidates, votes_per_candidate, outparty):
         votes.append(Output(result, "final_vote_count_c" + str(c), outparty))
 
     return votes
+
 
 def fn_check_sum(nr_voters, nr_candidates, votes_per_candidate, outparty):
     """
@@ -84,6 +93,7 @@ def fn_check_sum(nr_voters, nr_candidates, votes_per_candidate, outparty):
 
     return check_sum
 
+
 def fn_check_prod(nr_voters, nr_candidates, votes_per_candidate, outparty):
     """
     Verifies the product of vote values for each voter and candidate.
@@ -100,10 +110,17 @@ def fn_check_prod(nr_voters, nr_candidates, votes_per_candidate, outparty):
     for v in range(nr_voters):
         for c in range(nr_candidates):
             vote_v_c = votes_per_candidate[c][v]
-            check_v_c_product = (UnsignedInteger(1) - vote_v_c)*(UnsignedInteger(2) - vote_v_c)
-            check_prod.append(Output(check_v_c_product, "check_prod_v" + str(v) + "_c" + str(c), outparty))
-		
+            check_v_c_product = (UnsignedInteger(1) - vote_v_c) * (
+                UnsignedInteger(2) - vote_v_c
+            )
+            check_prod.append(
+                Output(
+                    check_v_c_product, "check_prod_v" + str(v) + "_c" + str(c), outparty
+                )
+            )
+
     return check_prod
+
 
 def nada_main():
 
@@ -115,9 +132,9 @@ def nada_main():
     voters = initialize_voters(nr_voters)
     outparty = Party(name="OutParty")
 
-	# 2. Inputs initialization
+    # 2. Inputs initialization
     votes_per_candidate = inputs_initialization(nr_voters, nr_candidates, voters)
-    
+
     # 3. Computation
     # Count the votes
     votes = count_votes(nr_voters, nr_candidates, votes_per_candidate, outparty)
@@ -127,5 +144,5 @@ def nada_main():
 
     # 4. Output
     # Concatenate lists
-    results = votes + check_sum + check_prod 
+    results = votes + check_sum + check_prod
     return results

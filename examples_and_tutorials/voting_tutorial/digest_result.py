@@ -2,16 +2,22 @@ def digest_plurality_vote_honest_result(dict_result, nr_candidates, nr_voters):
 
     # TODO: complete there the code to digest the output of the honest version
 
-    print("Update 'digest_plurality_vote_honest_result()' functions to digest the result.")
+    print(
+        "Update 'digest_plurality_vote_honest_result()' functions to digest the result."
+    )
 
     return None
 
 
-def digest_plurality_vote_dishonest_with_abort_result(dict_result, nr_candidates, nr_voters):
+def digest_plurality_vote_dishonest_with_abort_result(
+    dict_result, nr_candidates, nr_voters
+):
 
     # TODO: complete there the code to digest the output of the dishonest with abort version
 
-    print("Update 'digest_plurality_vote_dishonest_with_abort_result()' functions to digest the result.")
+    print(
+        "Update 'digest_plurality_vote_dishonest_with_abort_result()' functions to digest the result."
+    )
 
     return None
 
@@ -39,11 +45,11 @@ def digest_plurality_vote_robust_result(dict_result, nr_candidates, nr_voters):
     # check cheaters
     set_of_cheaters = set()
     for v in range(nr_voters):
-        if dict_result["check_sum_v"+str(v)] != nr_candidates + 1:
+        if dict_result["check_sum_v" + str(v)] != nr_candidates + 1:
             # add the voter id to set_of_cheaters
             set_of_cheaters.add(v)
         for c in range(nr_candidates):
-            if dict_result["check_prod_v"+str(v)+"_c"+str(c)] != 0:
+            if dict_result["check_prod_v" + str(v) + "_c" + str(c)] != 0:
                 # add the voter id to set_of_cheaters
                 set_of_cheaters.add(v)
 
@@ -51,20 +57,23 @@ def digest_plurality_vote_robust_result(dict_result, nr_candidates, nr_voters):
     votes_per_candidate = []
     for c in range(nr_candidates):
         # read nr of votes for candidate 'c'
-        votes_per_candidate.append(dict_result["final_vote_count_c"+str(c)])
+        votes_per_candidate.append(dict_result["final_vote_count_c" + str(c)])
     # revert action of cheaters for all candidates
     for cheater in set_of_cheaters:
         # if sum rule was broken
-        if dict_result["check_sum_v"+str(cheater)] != nr_candidates + 1:
+        if dict_result["check_sum_v" + str(cheater)] != nr_candidates + 1:
             for c in range(nr_candidates):
-                votes_per_candidate[c] -= dict_result["if_sum_cheat_open_v"+str(cheater)+"_c"+str(c)]
+                votes_per_candidate[c] -= dict_result[
+                    "if_sum_cheat_open_v" + str(cheater) + "_c" + str(c)
+                ]
         # if product rule was broken
         else:
             for c in range(nr_candidates):
-                votes_per_candidate[c] -= dict_result["if_prod_cheat_open_v"+str(cheater)+"_c"+str(c)]
-        
+                votes_per_candidate[c] -= dict_result[
+                    "if_prod_cheat_open_v" + str(cheater) + "_c" + str(c)
+                ]
+
     # define winner
     winner = max(range(len(votes_per_candidate)), key=lambda i: votes_per_candidate[i])
-    
-    return winner, votes_per_candidate, list(set_of_cheaters)
 
+    return winner, votes_per_candidate, list(set_of_cheaters)

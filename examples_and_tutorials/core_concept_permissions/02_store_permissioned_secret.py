@@ -11,7 +11,7 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from helpers.nillion_client_helper import (
     create_nillion_client,
     pay,
@@ -21,7 +21,8 @@ from helpers.nillion_client_helper import (
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
-async def main(args = None):
+
+async def main(args=None):
     parser = argparse.ArgumentParser(
         description="Create a secret on the Nillion network with set read/retrieve permissions"
     )
@@ -59,7 +60,9 @@ async def main(args = None):
 
     secret_name_2 = "my_int2"
     secret_2 = nillion.SecretInteger(32)
-    secrets_object = nillion.Secrets({secret_name_1: secret_1, secret_name_2: secret_2})
+    secrets_object = nillion.NadaValues(
+        {secret_name_1: secret_1, secret_name_2: secret_2}
+    )
 
     # Writer gives themself default core_concept_permissions
     permissions = nillion.Permissions.default_for_user(writer_user_id)
@@ -73,8 +76,10 @@ async def main(args = None):
     )
     if result == "not allowed":
         raise Exception("failed to set core_concept_permissions")
-    
-    print(f"ℹ️ Permissions set: Reader {args.retriever_user_id} is {result} to retrieve the secret")
+
+    print(
+        f"ℹ️ Permissions set: Reader {args.retriever_user_id} is {result} to retrieve the secret"
+    )
 
     # Get cost quote, then pay for operation to store the secret
     receipt_store = await pay(
@@ -92,12 +97,18 @@ async def main(args = None):
     )
 
     print("ℹ️ STORE ID:", store_id)
-    print("\n\nRun the following command to retrieve the secret by store id as the reader")
-    print(f"\n📋 python3 03_retrieve_secret.py --store_id {store_id} --secret_name {secret_name_1}")
+    print(
+        "\n\nRun the following command to retrieve the secret by store id as the reader"
+    )
+    print(
+        f"\n📋 python3 03_retrieve_secret.py --store_id {store_id} --secret_name {secret_name_1}"
+    )
     return store_id
+
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 @pytest.mark.asyncio
 async def test_main():

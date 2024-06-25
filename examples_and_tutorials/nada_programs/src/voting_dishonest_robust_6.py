@@ -4,7 +4,9 @@ PROGRAM 6
 nr of voters: m = 3
 nr of candidates: n = 2
 """
+
 from nada_dsl import *
+
 
 def return_val_if_any_false(list_of_bool, val):
     """
@@ -18,14 +20,15 @@ def return_val_if_any_false(list_of_bool, val):
     - val: If any boolean in the list is false.
     - 0: If none of the booleans in the list are false.
     """
-    
+
     final_value = UnsignedInteger(0)
     for bool in list_of_bool:
         # Use if_else method to check if the current boolean is true,
         # if true, return vfinal_valueal, otherwise return the current val
-        final_value = bool.if_else(final_value, val) 
+        final_value = bool.if_else(final_value, val)
 
     return final_value
+
 
 def initialize_voters(nr_voters):
     """
@@ -43,6 +46,7 @@ def initialize_voters(nr_voters):
 
     return voters
 
+
 def inputs_initialization(nr_voters, nr_candidates, voters):
     """
     Initialize inputs for votes per candidate.
@@ -58,9 +62,14 @@ def inputs_initialization(nr_voters, nr_candidates, voters):
     for c in range(nr_candidates):
         votes_per_candidate.append([])
         for v in range(nr_voters):
-            votes_per_candidate[c].append(SecretUnsignedInteger(Input(name="v" + str(v) + "_c" + str(c), party=voters[v])))
+            votes_per_candidate[c].append(
+                SecretUnsignedInteger(
+                    Input(name="v" + str(v) + "_c" + str(c), party=voters[v])
+                )
+            )
 
     return votes_per_candidate
+
 
 def count_votes(nr_voters, nr_candidates, votes_per_candidate, outparty):
     """
@@ -82,6 +91,7 @@ def count_votes(nr_voters, nr_candidates, votes_per_candidate, outparty):
         votes.append(Output(result, "final_vote_count_c" + str(c), outparty))
 
     return votes
+
 
 def fn_check_sum(nr_voters, nr_candidates, votes_per_candidate, outparty):
     """
@@ -109,9 +119,16 @@ def fn_check_sum(nr_voters, nr_candidates, votes_per_candidate, outparty):
             for c in range(nr_candidates):
                 vote_v_c = votes_per_candidate[c][v]
                 if_sum_cheat_open_v_c = comp_v_sum.if_else(UnsignedInteger(0), vote_v_c)
-                if_sum_cheat_open.append(Output(if_sum_cheat_open_v_c, "if_sum_cheat_open_v" + str(v) + "_c" + str(c), outparty))
+                if_sum_cheat_open.append(
+                    Output(
+                        if_sum_cheat_open_v_c,
+                        "if_sum_cheat_open_v" + str(v) + "_c" + str(c),
+                        outparty,
+                    )
+                )
 
     return check_sum, if_sum_cheat_open
+
 
 def fn_check_prod(nr_voters, nr_candidates, votes_per_candidate, outparty):
     """
@@ -133,22 +150,34 @@ def fn_check_prod(nr_voters, nr_candidates, votes_per_candidate, outparty):
         all_comp_v_prod = []
         for c in range(nr_candidates):
             vote_v_c = votes_per_candidate[c][v]
-            check_v_c_product = (UnsignedInteger(1) - vote_v_c)*(UnsignedInteger(2) - vote_v_c)
-            check_prod.append(Output(check_v_c_product, "check_prod_v" + str(v) + "_c" + str(c), outparty))
+            check_v_c_product = (UnsignedInteger(1) - vote_v_c) * (
+                UnsignedInteger(2) - vote_v_c
+            )
+            check_prod.append(
+                Output(
+                    check_v_c_product, "check_prod_v" + str(v) + "_c" + str(c), outparty
+                )
+            )
             # collect all reveal conditions
             comp_v_c_prod = check_v_c_product < UnsignedInteger(1)
             all_comp_v_prod.append(comp_v_c_prod)
         all_comp_prod.append(all_comp_v_prod)
-    # reveal all votes from voter v if 
+    # reveal all votes from voter v if
     for v in range(nr_voters):
         all_comp_v_prod = all_comp_prod[v]
         for c in range(nr_candidates):
             vote_v_c = votes_per_candidate[c][v]
             if_prod_cheat_open_v_c = return_val_if_any_false(all_comp_v_prod, vote_v_c)
-            if_prod_cheat_open.append(Output(if_prod_cheat_open_v_c, "if_prod_cheat_open_v" + str(v) + "_c" + str(c), outparty))
+            if_prod_cheat_open.append(
+                Output(
+                    if_prod_cheat_open_v_c,
+                    "if_prod_cheat_open_v" + str(v) + "_c" + str(c),
+                    outparty,
+                )
+            )
 
     return check_prod, if_prod_cheat_open
-				
+
 
 def nada_main():
 
@@ -160,15 +189,19 @@ def nada_main():
     voters = initialize_voters(nr_voters)
     outparty = Party(name="OutParty")
 
-	# 2. Inputs initialization
+    # 2. Inputs initialization
     votes_per_candidate = inputs_initialization(nr_voters, nr_candidates, voters)
-    
+
     # 3. Computation
     # Count the votes
     votes = count_votes(nr_voters, nr_candidates, votes_per_candidate, outparty)
     # Check input soundness
-    check_sum, if_sum_cheat_open = fn_check_sum(nr_voters, nr_candidates, votes_per_candidate, outparty)
-    check_prod, if_prod_cheat_open = fn_check_prod(nr_voters, nr_candidates, votes_per_candidate, outparty)
+    check_sum, if_sum_cheat_open = fn_check_sum(
+        nr_voters, nr_candidates, votes_per_candidate, outparty
+    )
+    check_prod, if_prod_cheat_open = fn_check_prod(
+        nr_voters, nr_candidates, votes_per_candidate, outparty
+    )
 
     # 4. Output
     # Concatenate lists

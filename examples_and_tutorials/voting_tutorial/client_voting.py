@@ -11,9 +11,7 @@ import os
 import sys
 from py_nillion_client import NodeKey, UserKey
 from dotenv import load_dotenv
-from config import (
-    CONFIG
-)
+from config import CONFIG
 
 from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
@@ -26,10 +24,15 @@ from helpers.nillion_client_helper import (
     create_payments_config,
 )
 
-from digest_result import digest_plurality_vote_honest_result, digest_plurality_vote_dishonest_with_abort_result, digest_plurality_vote_robust_result
+from digest_result import (
+    digest_plurality_vote_honest_result,
+    digest_plurality_vote_dishonest_with_abort_result,
+    digest_plurality_vote_robust_result,
+)
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
+
 
 async def main():
 
@@ -39,16 +42,16 @@ async def main():
 
     while True:
 
-        # Below, you can choose which voting program to use. In case you choose a voting program 
-        # different from the robust version ('voting_dishonest_robust_6'), you can complete  
-        # either 'digest_plurality_vote_honest_result()' or 'digest_plurality_vote_dishonest_with_abort_result()' 
+        # Below, you can choose which voting program to use. In case you choose a voting program
+        # different from the robust version ('voting_dishonest_robust_6'), you can complete
+        # either 'digest_plurality_vote_honest_result()' or 'digest_plurality_vote_dishonest_with_abort_result()'
         # functions above to digest the result.
         #
         # Existing voting nada_programs:
         #
-        # program_name = "voting_honest_1"  
-        # program_name = "voting_honest_2"  
-        # program_name = "voting_dishonest_abort_5"      
+        # program_name = "voting_honest_1"
+        # program_name = "voting_honest_2"
+        # program_name = "voting_dishonest_abort_5"
         # program_name = "voting_dishonest_robust_6"
 
         print("Choose a program to test:")
@@ -63,7 +66,7 @@ async def main():
             "1": "voting_honest_1",
             "2": "voting_honest_2",
             "3": "voting_dishonest_abort_5",
-            "4": "voting_dishonest_robust_6"
+            "4": "voting_dishonest_robust_6",
         }
 
         if choice in programs:
@@ -71,9 +74,15 @@ async def main():
             print("You have chosen:", program_name)
             print(" _         _   _                  _                  _ _   _     ")
             print("| |    ___| |_( )___  __   _____ | |_ ___  __      _(_) |_| |__  ")
-            print("| |   / _ \\ __|// __| \\ \\ / / _ \\| __/ _ \\ \\ \\ /\\ / / | __| '_ \\ ")
-            print("| |__|  __/ |_  \\__ \\  \\ V / (_) | ||  __/  \\ V  V /| | |_| | | |")
-            print("|_____\\___|\\__| |___/   \\_/_\\___/ \\__\\___|   \\_/\\_/ |_|\\__|_| |_|")
+            print(
+                "| |   / _ \\ __|// __| \\ \\ / / _ \\| __/ _ \\ \\ \\ /\\ / / | __| '_ \\ "
+            )
+            print(
+                "| |__|  __/ |_  \\__ \\  \\ V / (_) | ||  __/  \\ V  V /| | |_| | | |"
+            )
+            print(
+                "|_____\\___|\\__| |___/   \\_/_\\___/ \\__\\___|   \\_/\\_/ |_|\\__|_| |_|"
+            )
             print("                    _____(_) | (_) ___  _____| |                 ")
             print("                   |  _  | | | | |/ _ \\|  _  | |                 ")
             print("                   | | | | | | | | (_) | | | |_|                 ")
@@ -82,12 +91,12 @@ async def main():
             break  # Exit the loop if a valid choice is made
         else:
             print("Invalid choice. Please enter a number between 1 and 4.")
-   
-    # We initialize one party 'general_client' that represents all different parties. 
+
+    # We initialize one party 'general_client' that represents all different parties.
     #
-    # In a real environment, the clients must run in different machines with 
-    # different node and user keys. 
-    # 
+    # In a real environment, the clients must run in different machines with
+    # different node and user keys.
+    #
     # The script has the following flow:
     #     1. Parties initialization
     #     2. Owner stores a program.
@@ -97,7 +106,7 @@ async def main():
     #         4.2 Set compute permission to owner
     #     5. (Real environment:) Voters send their their party IDs and store IDs to the owner.
     #     6. Owner compute voting system using votes from voters.
-    
+
     nr_candidates = CONFIG["nr_candidates"]
     nr_voters = CONFIG["nr_voters"]
 
@@ -155,17 +164,18 @@ async def main():
     #     )
     #     voters.append(voter)
 
-
     #####################################
     # 2. Storing program                #
     #####################################
-    
+
     # Note: do not forget to compile the nada_programs and store the corresponding .nada.bin file.
-    program_mir_path = f"../../programs-compiled/{program_name}.nada.bin"
+    program_mir_path = f"../nada_programs/target/{program_name}.nada.bin"
     if os.path.exists(program_mir_path):
         None
     else:
-        raise FileNotFoundError(f"The file '{program_mir_path}' does not exist.\nMake sure you compiled the PyNada programs with './compile_programs.sh'.\nCheck README.md for more details.")
+        raise FileNotFoundError(
+            f"The file '{program_mir_path}' does not exist.\nMake sure you compiled the PyNada programs with './compile_programs.sh'.\nCheck README.md for more details."
+        )
 
     # Store program in the Network
     print(f"Storing program in the network: {program_name}")
@@ -190,7 +200,7 @@ async def main():
     # 3. Send program ID                #
     #####################################
 
-    # This requires its own mechanism in a real environment. 
+    # This requires its own mechanism in a real environment.
     # In this demo, we just reuse the variable 'program_id'.
 
     #####################################
@@ -214,26 +224,28 @@ async def main():
         print("voter_v: ", voter_v)
         # structure v's votes
         v_vote_dic = {}
-        v_input_file = "inputs/v"+str(v)+"_input.txt"
-        with open(v_input_file, 'r') as file:
+        v_input_file = "inputs/v" + str(v) + "_input.txt"
+        with open(v_input_file, "r") as file:
             c = 0
             for line in file:
                 # Remove leading and trailing whitespaces, then convert to integer
                 v_c_vote_value = int(line.strip())
                 v_c_vote = nillion.SecretUnsignedInteger(v_c_vote_value)
-                v_vote_dic["v"+str(v)+"_c"+str(c)] = v_c_vote
+                v_vote_dic["v" + str(v) + "_c" + str(c)] = v_c_vote
                 c += 1
-        v_to_be_store_values = nillion.Secrets(v_vote_dic)
+        v_to_be_store_values = nillion.NadaValues(v_vote_dic)
 
         ###########################################
         # 4.2 Set compute permissions to owner    #
         ###########################################
         # Give permissions to owner to compute with my vote
         v_permissions = nillion.Permissions.default_for_user(voter_v.user_id)
-        v_permissions.add_compute_permissions({
-            # owner.user_id: {program_id},
-            general_client.user_id: {program_id},
-        })
+        v_permissions.add_compute_permissions(
+            {
+                # owner.user_id: {program_id},
+                general_client.user_id: {program_id},
+            }
+        )
 
         # Get cost quote, then pay for operation to store the secret
         receipt_store = await pay(
@@ -245,21 +257,21 @@ async def main():
         )
 
         # Store in the network
-        print("Storing vote by voter "+str(v)+f": {v_to_be_store_values}")
+        print("Storing vote by voter " + str(v) + f": {v_to_be_store_values}")
         store_id = await voter_v.store_values(
             cluster_id, v_to_be_store_values, v_permissions, receipt_store
         )
         store_ids.append(store_id)
-        print(f"Stored vote by voter "+str(v)+f" with store_id ={store_id}")
+        print(f"Stored vote by voter " + str(v) + f" with store_id ={store_id}")
 
     #####################################
     # 5. Send party IDs and store IDs   #
     #####################################
 
-    # This requires its own mechanism in a real environment. 
+    # This requires its own mechanism in a real environment.
     # In this demo, we just reuse the variable 'store_ids' and
     # the voters' clients to extra their party IDs.
-        
+
     #####################################
     # 6. Owner execute computation      #
     #####################################
@@ -270,7 +282,7 @@ async def main():
     owner_bindings = nillion.ProgramBindings(program_id)
     for v in range(nr_voters):
         # owner_bindings_0.add_input_party("Voter"+str(v), voters[v].party_id)
-        owner_bindings.add_input_party("Voter"+str(v), general_client.party_id)
+        owner_bindings.add_input_party("Voter" + str(v), general_client.party_id)
 
     ##################################################
     # 6.2 Bind owner to output party in the program  #
@@ -278,10 +290,10 @@ async def main():
     # Bind the "OutParty" party in the computation to the owner's client
     # owner_bindings.add_output_party("OutParty", owner.party_id)
     owner_bindings.add_output_party("OutParty", general_client.party_id)
-    
+
     # No secret is directly passed to 'compute'. It only uses
     # stored secrets.
-    to_be_used_in_computation = nillion.Secrets({})
+    to_be_used_in_computation = nillion.NadaValues({})
 
     print(f"Computing using program {program_id}")
     print(f"Stored secrets: {store_ids}")
@@ -303,8 +315,7 @@ async def main():
         owner_bindings,
         store_ids,
         to_be_used_in_computation,
-        nillion.PublicVariables({}),
-        receipt_compute
+        receipt_compute,
     )
 
     print(f"Computation sent to the network, compute_id = {compute_id}")
@@ -318,17 +329,22 @@ async def main():
 
             if program_name == "voting_dishonest_robust_6":
                 print("Let use digest the result given by the network:")
-                winner, total_votes, cheaters = digest_plurality_vote_robust_result(dict_result, nr_candidates, nr_voters)
+                winner, total_votes, cheaters = digest_plurality_vote_robust_result(
+                    dict_result, nr_candidates, nr_voters
+                )
                 print(f"🏆 Winner is candidate with ID={winner}")
                 print(f"🔢 Total number of votes per candidate: {total_votes}")
                 print(f"🕵️‍♂️ List of cheaters' IDs: {cheaters}")
             elif program_name in ["voting_honest_1", "voting_honest_2"]:
-                digest_plurality_vote_honest_result(dict_result, nr_candidates, nr_voters)
+                digest_plurality_vote_honest_result(
+                    dict_result, nr_candidates, nr_voters
+                )
             elif program_name == "voting_dishonest_abort_5":
-                digest_plurality_vote_dishonest_with_abort_result(dict_result, nr_candidates, nr_voters)
-            
+                digest_plurality_vote_dishonest_with_abort_result(
+                    dict_result, nr_candidates, nr_voters
+                )
+
             break
-    
- 
+
 
 asyncio.run(main())

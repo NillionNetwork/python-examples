@@ -1,10 +1,11 @@
 from nada_dsl import *
 
+
 def nada_main():
     """
-    This program computes the correlation coefficient between two vectors. 
-    
-    In this example we assume there are two parties P0 and P1. 
+    This program computes the correlation coefficient between two vectors.
+
+    In this example we assume there are two parties P0 and P1.
     P0 provides 10 points (x_i, y_i) and P1 provides 10 pointss (x_j, y_j).
     """
 
@@ -20,7 +21,6 @@ def nada_main():
         parties.append(Party(name="Party" + str(i)))
     outparty = Party(name="OutParty")
 
-
     # Build x and y vector
     xi_vector = []
     yi_vector = []
@@ -30,8 +30,12 @@ def nada_main():
         yi_vector.append(SecretInteger(Input(name="y" + str(i), party=parties[0])))
     # Party 1 input
     for i in range(p1_points):
-        xi_vector.append(SecretInteger(Input(name="x" + str(i + p0_points), party=parties[1])))
-        yi_vector.append(SecretInteger(Input(name="y" + str(i + p0_points), party=parties[1])))
+        xi_vector.append(
+            SecretInteger(Input(name="x" + str(i + p0_points), party=parties[1]))
+        )
+        yi_vector.append(
+            SecretInteger(Input(name="y" + str(i + p0_points), party=parties[1]))
+        )
 
     # Compute the following values:
     #   sum_x = Σ x_i
@@ -70,4 +74,7 @@ def nada_main():
     #            else, sign is negative
     sign = n_times_sum_xy > sum_x_times_sum_y
 
-    return [(Output(r2, "correlation_coefficient_squared", outparty)), (Output(sign, "sign", outparty))] 
+    return [
+        (Output(r2, "correlation_coefficient_squared", outparty)),
+        (Output(sign, "sign", outparty)),
+    ]

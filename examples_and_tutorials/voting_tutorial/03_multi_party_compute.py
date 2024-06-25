@@ -11,12 +11,7 @@ import os
 import sys
 from py_nillion_client import NodeKey, UserKey
 from dotenv import load_dotenv
-from config import (
-    CONFIG,
-    CONFIG_CANDIDATES,
-    CONFIG_PARTY_1,
-    CONFIG_N_PARTIES
-)
+from config import CONFIG, CONFIG_CANDIDATES, CONFIG_PARTY_1, CONFIG_N_PARTIES
 
 from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
@@ -29,7 +24,11 @@ from helpers.nillion_client_helper import (
     create_payments_config,
 )
 
-from digest_result import digest_plurality_vote_honest_result, digest_plurality_vote_dishonest_with_abort_result, digest_plurality_vote_robust_result
+from digest_result import (
+    digest_plurality_vote_honest_result,
+    digest_plurality_vote_dishonest_with_abort_result,
+    digest_plurality_vote_robust_result,
+)
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
@@ -48,12 +47,13 @@ parser.add_argument(
 parser.add_argument(
     "--party_ids_to_store_ids",
     required=True,
-    nargs='+',
+    nargs="+",
     type=str,
     help="List of partyid:storeid pairs of the secrets, with each pair separated by a space",
 )
 
 args = parser.parse_args()
+
 
 async def main():
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
@@ -70,8 +70,7 @@ async def main():
     # Alice initializes a client
     seed = CONFIG_PARTY_1["seed"]
     client_alice = create_nillion_client(
-        UserKey.from_seed(seed),
-        NodeKey.from_seed(seed)
+        UserKey.from_seed(seed), NodeKey.from_seed(seed)
     )
     payments_config = create_payments_config(chain_id, grpc_endpoint)
     payments_client = LedgerClient(payments_config)
@@ -89,8 +88,10 @@ async def main():
 
     party_name_alice = CONFIG_PARTY_1["party_name"]
     secret_votes = CONFIG_PARTY_1["secret_votes"]
-    secret_votes = {key: nillion.SecretUnsignedInteger(value) for key, value in secret_votes.items()}
-    compute_time_secrets = nillion.Secrets(secret_votes)
+    secret_votes = {
+        key: nillion.SecretUnsignedInteger(value) for key, value in secret_votes.items()
+    }
+    compute_time_secrets = nillion.NadaValues(secret_votes)
 
     print(f"\n🎉 {party_name_alice} provided her vote as a compute time secret.")
 
@@ -108,18 +109,18 @@ async def main():
 
     # Also add Bob and Charlie as input parties
     party_ids_to_store_ids = {}
-    i=0
+    i = 0
     for pair in args.party_ids_to_store_ids:
-        party_id, store_id = pair.split(':')
-        party_role = CONFIG_N_PARTIES[i]['party_role']
+        party_id, store_id = pair.split(":")
+        party_role = CONFIG_N_PARTIES[i]["party_role"]
         compute_bindings.add_input_party(party_role, party_id)
         party_ids_to_store_ids[party_id] = store_id
-        i=i+1
+        i = i + 1
 
     ##################################################
     # 6.2 Bind owner to output party in the program  #
     ##################################################
-    # Add an output party (Alice). 
+    # Add an output party (Alice).
     # The output party reads the result of the blind computation
     compute_bindings.add_output_party("OutParty", party_id_alice)
 
@@ -138,10 +139,9 @@ async def main():
     compute_id = await client_alice.compute(
         cluster_id,
         compute_bindings,
-        list(party_ids_to_store_ids.values()), # Bob and Charlie's stored secrets
-        compute_time_secrets, # Alice's computation time secret
-        nillion.PublicVariables({}),
-        receipt_compute
+        list(party_ids_to_store_ids.values()),  # Bob and Charlie's stored secrets
+        compute_time_secrets,  # Alice's computation time secret
+        receipt_compute,
     )
 
     # Print compute result
@@ -163,7 +163,9 @@ async def main():
             candidates = CONFIG_CANDIDATES
             if program_name == "voting_dishonest_robust_6":
                 print("Let use digest the result given by the network:")
-                winner, total_votes, cheaters = digest_plurality_vote_robust_result(dict_result, nr_candidates, nr_voters)
+                winner, total_votes, cheaters = digest_plurality_vote_robust_result(
+                    dict_result, nr_candidates, nr_voters
+                )
                 winner_name = candidates[winner]
                 cheaters_names = [voters[voter]["party_name"] for voter in cheaters]
                 print(f"🏆 Winner is {winner_name}")
@@ -172,10 +174,15 @@ async def main():
                 print(f"          Emma: {total_votes[1]}")
                 print(f"🕵️‍♂️ List of cheaters: {cheaters_names}")
             elif program_name in ["voting_honest_1", "voting_honest_2"]:
-                digest_plurality_vote_honest_result(dict_result, nr_candidates, nr_voters)
+                digest_plurality_vote_honest_result(
+                    dict_result, nr_candidates, nr_voters
+                )
             elif program_name == "voting_dishonest_abort_5":
-                digest_plurality_vote_dishonest_with_abort_result(dict_result, nr_candidates, nr_voters)
-            
+                digest_plurality_vote_dishonest_with_abort_result(
+                    dict_result, nr_candidates, nr_voters
+                )
+
             break
-    
+
+
 asyncio.run(main())

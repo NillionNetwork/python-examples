@@ -12,7 +12,7 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from helpers.nillion_client_helper import (
     create_nillion_client,
     pay,
@@ -28,13 +28,14 @@ store_permissioned_secret = importlib.import_module("02_store_permissioned_secre
 retrieve_secret = importlib.import_module("03_retrieve_secret")
 revoke_read_permissions = importlib.import_module("04_revoke_read_permissions")
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from helpers.nillion_client_helper import create_nillion_client
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
-async def main(args = None):
+
+async def main(args=None):
     parser = argparse.ArgumentParser(
         description="Check that retrieval permissions on a Secret have been revoked"
     )
@@ -52,7 +53,7 @@ async def main(args = None):
     seed_1 = "seed_1"
     userkey = UserKey.from_seed(seed_1)
     nodekey = NodeKey.from_seed(seed_1)
-    
+
     # Reader Nillion client
     reader = create_nillion_client(userkey, nodekey)
     reader_user_id = reader.user_id
@@ -76,25 +77,38 @@ async def main(args = None):
 
     try:
         secret_name = "my_int1"
-        await reader.retrieve_value(cluster_id, args.store_id, secret_name, receipt_store)
-        print(f"⛔ FAIL: {reader_user_id} user id with revoked permissions was allowed to access secret", file=sys.stderr)
+        await reader.retrieve_value(
+            cluster_id, args.store_id, secret_name, receipt_store
+        )
+        print(
+            f"⛔ FAIL: {reader_user_id} user id with revoked permissions was allowed to access secret",
+            file=sys.stderr,
+        )
     except Exception as e:
-        if str(e) == "retrieving value: the user is not authorized to access the secret":
-            print(f"🦄 Success: After user permissions were revoked, {reader_user_id} was not allowed to access secret", file=sys.stderr)
+        if (
+            str(e)
+            == "retrieving value: the user is not authorized to access the secret"
+        ):
+            print(
+                f"🦄 Success: After user permissions were revoked, {reader_user_id} was not allowed to access secret",
+                file=sys.stderr,
+            )
         else:
-            raise(e)
+            raise (e)
+
 
 if __name__ == "__main__":
     asyncio.run(main())
 
+
 @pytest.mark.asyncio
 async def test_main():
     result = await fetch_reader_userid.main()
-    args = ['--retriever_user_id', result]
+    args = ["--retriever_user_id", result]
     result = await store_permissioned_secret.main(args)
-    args = ['--store_id', result]
+    args = ["--store_id", result]
     result = await retrieve_secret.main(args)
-    args = ['--store_id', result[0], '--revoked_user_id', result[1]]
+    args = ["--store_id", result[0], "--revoked_user_id", result[1]]
     result = await revoke_read_permissions.main(args)
-    args = ['--store_id', result]
+    args = ["--store_id", result]
     await main(args)

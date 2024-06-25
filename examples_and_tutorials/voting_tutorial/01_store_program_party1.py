@@ -27,6 +27,7 @@ from helpers.nillion_client_helper import (
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
+
 # Alice stores the voting program in the network
 async def main():
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
@@ -35,16 +36,16 @@ async def main():
 
     while True:
 
-        # Below, you can choose which voting program to use. In case you choose a voting program 
-        # different from the robust version ('voting_dishonest_robust_6'), you can complete  
-        # either 'digest_plurality_vote_honest_result()' or 'digest_plurality_vote_dishonest_with_abort_result()' 
+        # Below, you can choose which voting program to use. In case you choose a voting program
+        # different from the robust version ('voting_dishonest_robust_6'), you can complete
+        # either 'digest_plurality_vote_honest_result()' or 'digest_plurality_vote_dishonest_with_abort_result()'
         # functions to digest the result.
         #
         # Existing voting nada_programs:
         #
-        # program_name = "voting_honest_1"  
-        # program_name = "voting_honest_2"  
-        # program_name = "voting_dishonest_abort_5"      
+        # program_name = "voting_honest_1"
+        # program_name = "voting_honest_2"
+        # program_name = "voting_dishonest_abort_5"
         # program_name = "voting_dishonest_robust_6"
 
         print("Choose a program to test:")
@@ -59,7 +60,7 @@ async def main():
             "1": "voting_honest_1",
             "2": "voting_honest_2",
             "3": "voting_dishonest_abort_5",
-            "4": "voting_dishonest_robust_6"
+            "4": "voting_dishonest_robust_6",
         }
 
         if choice in programs:
@@ -67,9 +68,15 @@ async def main():
             print("You have chosen:", program_name)
             print(" _         _   _                  _                  _ _   _     ")
             print("| |    ___| |_( )___  __   _____ | |_ ___  __      _(_) |_| |__  ")
-            print("| |   / _ \\ __|// __| \\ \\ / / _ \\| __/ _ \\ \\ \\ /\\ / / | __| '_ \\ ")
-            print("| |__|  __/ |_  \\__ \\  \\ V / (_) | ||  __/  \\ V  V /| | |_| | | |")
-            print("|_____\\___|\\__| |___/   \\_/_\\___/ \\__\\___|   \\_/\\_/ |_|\\__|_| |_|")
+            print(
+                "| |   / _ \\ __|// __| \\ \\ / / _ \\| __/ _ \\ \\ \\ /\\ / / | __| '_ \\ "
+            )
+            print(
+                "| |__|  __/ |_  \\__ \\  \\ V / (_) | ||  __/  \\ V  V /| | |_| | | |"
+            )
+            print(
+                "|_____\\___|\\__| |___/   \\_/_\\___/ \\__\\___|   \\_/\\_/ |_|\\__|_| |_|"
+            )
             print("                    _____(_) | (_) ___  _____| |                 ")
             print("                   |  _  | | | | |/ _ \\|  _  | |                 ")
             print("                   | | | | | | | | (_) | | | |_|                 ")
@@ -114,11 +121,13 @@ async def main():
         cluster_id,
     )
 
-    program_mir_path = f"../../programs-compiled/{program_name}.nada.bin"
+    program_mir_path = f"../nada_programs/target/{program_name}.nada.bin"
     if os.path.exists(program_mir_path):
         None
     else:
-        raise FileNotFoundError(f"The file '{program_mir_path}' does not exist.\nMake sure you compiled the PyNada programs with './compile_programs.sh'.\nCheck README.md for more details.")
+        raise FileNotFoundError(
+            f"The file '{program_mir_path}' does not exist.\nMake sure you compiled the PyNada programs with './compile_programs.sh'.\nCheck README.md for more details."
+        )
 
     # Store program in the Network
     print(f"Storing program in the network: {program_name}")
@@ -134,11 +143,16 @@ async def main():
     # 3. Send program ID                #
     #####################################
 
-    # This requires its own mechanism in a real environment. 
+    # This requires its own mechanism in a real environment.
     print(f"Alice stored {program_name} program at program_id: {program_id}")
     print(f"Alice tells Bob and Charlie her user_id and the voting program_id")
 
-    print("\n📋⬇️ Copy and run the following command to store Bob and Charlie's votes in the network")
-    print(f"\npython3 02_store_secret_party_n.py --user_id_1 {user_id_alice} --program_id {program_id}")
+    print(
+        "\n📋⬇️ Copy and run the following command to store Bob and Charlie's votes in the network"
+    )
+    print(
+        f"\npython3 02_store_secret_party_n.py --user_id_1 {user_id_alice} --program_id {program_id}"
+    )
+
 
 asyncio.run(main())

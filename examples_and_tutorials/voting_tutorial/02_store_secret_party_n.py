@@ -11,9 +11,7 @@ import os
 import sys
 from py_nillion_client import NodeKey, UserKey
 from dotenv import load_dotenv
-from config import (
-    CONFIG_N_PARTIES
-)
+from config import CONFIG_N_PARTIES
 
 from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
@@ -47,12 +45,13 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+
 # Bob and Charlie store their votes in the network
 async def main():
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
     grpc_endpoint = os.getenv("NILLION_NILCHAIN_GRPC")
     chain_id = os.getenv("NILLION_NILCHAIN_CHAIN_ID")
-    
+
     # start a list of store ids to keep track of stored secrets
     store_ids = []
     party_ids = []
@@ -68,8 +67,7 @@ async def main():
         #############################
         seed = party_info["seed"]
         client_n = create_nillion_client(
-            UserKey.from_seed(seed),
-            NodeKey.from_seed(seed)
+            UserKey.from_seed(seed), NodeKey.from_seed(seed)
         )
 
         # Create payments config and set up Nillion wallet with a private key to pay for operations
@@ -85,13 +83,16 @@ async def main():
         party_name = party_info["party_name"]
         party_role = party_info["party_role"]
         secret_votes = party_info["secret_votes"]
-        
+
         #####################################
         # 4. Storing votes                  #
         #####################################
         # Create a secret for the current party
-        secret_votes = {key: nillion.SecretUnsignedInteger(value) for key, value in secret_votes.items()}
-        stored_secret = nillion.Secrets(secret_votes)
+        secret_votes = {
+            key: nillion.SecretUnsignedInteger(value)
+            for key, value in secret_votes.items()
+        }
+        stored_secret = nillion.NadaValues(secret_votes)
 
         ###########################################
         # 4.2 Set compute permissions to owner    #
@@ -104,7 +105,9 @@ async def main():
             args.user_id_1: {args.program_id},
         }
         permissions.add_compute_permissions(compute_permissions)
-        print(f"\n👍 {party_name} gives compute permissions on their secret to Alice's user_id: {args.user_id_1}")
+        print(
+            f"\n👍 {party_name} gives compute permissions on their secret to Alice's user_id: {args.user_id_1}"
+        )
 
         # Get cost quote, then pay for operation to store the secret
         receipt_store = await pay(
@@ -124,15 +127,22 @@ async def main():
         party_ids.append(party_id_n)
 
         print(f"\n🎉 {party_name} stored its vote at store id: {store_id}")
-        
+
     #####################################
     # 5. Send party IDs and store IDs   #
     #####################################
 
-    # This requires its own mechanism in a real environment. 
-    party_ids_to_store_ids = ' '.join([f'{party_id}:{store_id}' for party_id, store_id in zip(party_ids, store_ids)])
+    # This requires its own mechanism in a real environment.
+    party_ids_to_store_ids = " ".join(
+        [f"{party_id}:{store_id}" for party_id, store_id in zip(party_ids, store_ids)]
+    )
 
-    print("\n📋⬇️  Copy and run the following command to run multi party computation using the secrets")
-    print(f"\npython3 03_multi_party_compute.py --program_id {args.program_id} --party_ids_to_store_ids {party_ids_to_store_ids}")  
+    print(
+        "\n📋⬇️  Copy and run the following command to run multi party computation using the secrets"
+    )
+    print(
+        f"\npython3 03_multi_party_compute.py --program_id {args.program_id} --party_ids_to_store_ids {party_ids_to_store_ids}"
+    )
+
 
 asyncio.run(main())

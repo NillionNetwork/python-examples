@@ -28,6 +28,7 @@ from helpers.nillion_client_helper import (
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
+
 async def main(args=None):
     parser = argparse.ArgumentParser(
         description="Create a secret on the Nillion network with set read/retrieve permissions"
@@ -96,7 +97,7 @@ async def main(args=None):
     party_name_alice = CONFIG_PARTY_1["party_name"]
     secret_name_alice = CONFIG_PARTY_1["secret_name"]
     secret_value_alice = CONFIG_PARTY_1["secret_value"]
-    compute_time_secrets = nillion.Secrets(
+    compute_time_secrets = nillion.NadaValues(
         {secret_name_alice: nillion.SecretInteger(secret_value_alice)}
     )
 
@@ -119,7 +120,6 @@ async def main(args=None):
         compute_bindings,
         list(party_ids_to_store_ids.values()),  # Bob and Charlie's stored secrets
         compute_time_secrets,  # Alice's computation time secret
-        nillion.PublicVariables({}),
         receipt_compute,
     )
 
