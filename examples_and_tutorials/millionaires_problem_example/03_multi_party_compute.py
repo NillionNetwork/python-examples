@@ -18,16 +18,10 @@ from config import CONFIG_PARTY_1, CONFIG_N_PARTIES
 store_secret_party_1 = importlib.import_module("01_store_secret_party1")
 store_secret_party_n = importlib.import_module("02_store_secret_party_n")
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from helpers.nillion_client_helper import (
-    create_nillion_client,
-    pay,
-    create_payments_config,
-)
+from nillion_python_helpers import pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
-
 
 async def main(args=None):
     parser = argparse.ArgumentParser(

@@ -8,7 +8,6 @@
 import asyncio
 import py_nillion_client as nillion
 import os
-import sys
 from dotenv import load_dotenv
 
 from cosmpy.aerial.client import LedgerClient
@@ -17,16 +16,10 @@ from cosmpy.crypto.keypairs import PrivateKey
 
 from py_nillion_client import NodeKey, UserKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from helpers.nillion_client_helper import (
-    create_nillion_client,
-    pay,
-    create_payments_config,
-)
+from nillion_python_helpers import pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
-
 
 # Alice stores the voting program in the network
 async def main():
@@ -112,15 +105,6 @@ async def main():
     # 2. Storing program                #
     #####################################
 
-    # Get cost quote, then pay for operation to store program
-    receipt_store_program = await pay(
-        client_alice,
-        nillion.Operation.store_program(),
-        payments_wallet,
-        payments_client,
-        cluster_id,
-    )
-
     program_mir_path = f"../nada_programs/target/{program_name}.nada.bin"
     if os.path.exists(program_mir_path):
         None
@@ -128,6 +112,15 @@ async def main():
         raise FileNotFoundError(
             f"The file '{program_mir_path}' does not exist.\nMake sure you compiled the PyNada programs with './compile_programs.sh'.\nCheck README.md for more details."
         )
+
+    # Get cost quote, then pay for operation to store program
+    receipt_store_program = await pay(
+        client_alice,
+        nillion.Operation.store_program(program_mir_path),
+        payments_wallet,
+        payments_client,
+        cluster_id,
+    )
 
     # Store program in the Network
     print(f"Storing program in the network: {program_name}")

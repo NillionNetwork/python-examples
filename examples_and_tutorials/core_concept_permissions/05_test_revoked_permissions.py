@@ -12,27 +12,15 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from helpers.nillion_client_helper import (
-    create_nillion_client,
-    pay,
-    create_payments_config,
-)
+from nillion_python_helpers import pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
-
 
 fetch_reader_userid = importlib.import_module("01_fetch_reader_userid")
 store_permissioned_secret = importlib.import_module("02_store_permissioned_secret")
 retrieve_secret = importlib.import_module("03_retrieve_secret")
 revoke_read_permissions = importlib.import_module("04_revoke_read_permissions")
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from helpers.nillion_client_helper import create_nillion_client
-
-home = os.getenv("HOME")
-load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
 
 async def main(args=None):

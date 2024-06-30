@@ -8,7 +8,6 @@ import argparse
 import asyncio
 import py_nillion_client as nillion
 import os
-import sys
 from py_nillion_client import NodeKey, UserKey
 from dotenv import load_dotenv
 from config import CONFIG, CONFIG_CANDIDATES, CONFIG_PARTY_1, CONFIG_N_PARTIES
@@ -17,12 +16,7 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from helpers.nillion_client_helper import (
-    create_nillion_client,
-    pay,
-    create_payments_config,
-)
+from nillion_python_helpers import pay, create_nillion_client, create_payments_config
 
 from digest_result import (
     digest_plurality_vote_honest_result,

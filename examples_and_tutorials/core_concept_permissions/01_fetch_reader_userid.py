@@ -1,16 +1,16 @@
 import asyncio
 import os
-import sys
 import pytest
 
 from py_nillion_client import NodeKey, UserKey
 from dotenv import load_dotenv
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from helpers.nillion_client_helper import create_nillion_client
+from nillion_python_helpers import pay, create_nillion_client, create_payments_config
 
-home = os.getenv("HOME")
-load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
+#home = os.getenv("HOME")
+#load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
+
+load_dotenv()
 
 
 async def main():

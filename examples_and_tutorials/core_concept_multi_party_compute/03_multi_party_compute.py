@@ -11,15 +11,11 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from helpers.nillion_client_helper import (
-    create_nillion_client,
-    pay,
-    create_payments_config,
-)
+from nillion_python_helpers import pay, create_nillion_client, create_payments_config
 
-home = os.getenv("HOME")
-load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
+#home = os.getenv("HOME")
+#load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
+load_dotenv()
 
 from config import CONFIG_PROGRAM_NAME, CONFIG_PARTY_1, CONFIG_N_PARTIES
 
@@ -47,6 +43,7 @@ async def main(args=None):
     args = parser.parse_args(args)
 
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
+    print(cluster_id)
     grpc_endpoint = os.getenv("NILLION_NILCHAIN_GRPC")
     chain_id = os.getenv("NILLION_NILCHAIN_CHAIN_ID")
 

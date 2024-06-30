@@ -1,29 +1,20 @@
-import argparse
 import asyncio
+import argparse
 import py_nillion_client as nillion
 import os
-import sys
 import pytest
 
 from py_nillion_client import NodeKey, UserKey
 from dotenv import load_dotenv
-from config import CONFIG_N_PARTIES
-
 from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from helpers.nillion_client_helper import (
-    create_nillion_client,
-    pay,
-    create_payments_config,
-)
-from helpers.nillion_keypath_helper import getUserKeyFromFile, getNodeKeyFromFile
+from config import CONFIG_N_PARTIES
+from nillion_python_helpers import pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
-
 
 # Bob and Charlie store their salaries in the network
 async def main(args=None):
@@ -46,6 +37,7 @@ async def main(args=None):
     args = parser.parse_args(args)
 
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
+    print(cluster_id)
     grpc_endpoint = os.getenv("NILLION_NILCHAIN_GRPC")
     chain_id = os.getenv("NILLION_NILCHAIN_CHAIN_ID")
 
@@ -92,7 +84,7 @@ async def main(args=None):
 
         receipt_store = await pay(
             client_n,
-            nillion.Operation.store_values(stored_secret),
+            nillion.Operation.store_values(stored_secret, ttl_days=5),
             payments_wallet_n,
             payments_client_n,
             cluster_id,

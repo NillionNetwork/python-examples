@@ -1,17 +1,9 @@
-import os
-from py_nillion_client import NodeKey, UserKey
-from dotenv import load_dotenv
-
-home = os.getenv("HOME")
-load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
-
 # replace this with your name
 CONFIG_PROGRAM_NAME = "addition_simple_multi_party"
 
 # 1st party
 CONFIG_PARTY_1 = {
     "seed": "party_1_seed",
-    "nodekey_alternate_file": os.getenv("NILLION_NODEKEY_PATH_PARTY_4"),
     "party_name": "Party1",
     "secrets": {
         "my_int1": 1,

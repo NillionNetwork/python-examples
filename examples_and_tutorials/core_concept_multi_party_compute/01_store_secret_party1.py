@@ -1,7 +1,6 @@
 import asyncio
 import py_nillion_client as nillion
 import os
-import sys
 import pytest
 
 from py_nillion_client import NodeKey, UserKey
@@ -10,15 +9,12 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from helpers.nillion_client_helper import (
-    create_nillion_client,
-    pay,
-    create_payments_config,
-)
+from nillion_python_helpers import pay, create_nillion_client, create_payments_config
 
-home = os.getenv("HOME")
-load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
+#home = os.getenv("HOME")
+#load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
+
+load_dotenv()
 
 from config import CONFIG_PROGRAM_NAME, CONFIG_PARTY_1
 
@@ -49,7 +45,7 @@ async def main():
     # Get cost quote, then pay for operation to store program
     receipt_store_program = await pay(
         client_1,
-        nillion.Operation.store_program(),
+        nillion.Operation.store_program(program_mir_path),
         payments_wallet,
         payments_client,
         cluster_id,
@@ -82,7 +78,7 @@ async def main():
     # Get cost quote, then pay for operation to store the secret
     receipt_store = await pay(
         client_1,
-        nillion.Operation.store_values(stored_secret_1),
+        nillion.Operation.store_values(stored_secret_1, ttl_days=5),
         payments_wallet,
         payments_client,
         cluster_id,

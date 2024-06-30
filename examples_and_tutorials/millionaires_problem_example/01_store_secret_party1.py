@@ -1,31 +1,23 @@
 import asyncio
 import py_nillion_client as nillion
 import os
-import sys
 import pytest
 
 from py_nillion_client import NodeKey, UserKey
 from dotenv import load_dotenv
-from config import CONFIG_PARTY_1
-
 from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from helpers.nillion_client_helper import (
-    create_nillion_client,
-    pay,
-    create_payments_config,
-)
+from nillion_python_helpers import pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
-
 # Alice stores the millionaires program in the network
 async def main():
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
+    print(cluster_id)
     grpc_endpoint = os.getenv("NILLION_NILCHAIN_GRPC")
     chain_id = os.getenv("NILLION_NILCHAIN_CHAIN_ID")
     seed = "alice_seed"
@@ -38,7 +30,7 @@ async def main():
 
     # Note: check out the code for the full millionaires program in the nada_programs folder
     program_mir_path = f"../nada_programs/target/{millionaires_program_name}.nada.bin"
-
+    print(program_mir_path)
     payments_config = create_payments_config(chain_id, grpc_endpoint)
     payments_client = LedgerClient(payments_config)
     payments_wallet = LocalWallet(
@@ -49,7 +41,7 @@ async def main():
     # Pay to store the program
     receipt_store_program = await pay(
         client_alice,
-        nillion.Operation.store_program(),
+        nillion.Operation.store_program(program_mir_path),
         payments_wallet,
         payments_client,
         cluster_id,
