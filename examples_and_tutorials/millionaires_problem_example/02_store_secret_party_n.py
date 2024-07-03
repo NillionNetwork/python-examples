@@ -11,7 +11,7 @@ from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
 from config import CONFIG_N_PARTIES
-from nillion_python_helpers import pay, create_nillion_client, create_payments_config
+from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
@@ -82,7 +82,7 @@ async def main(args=None):
             f"\n👍 {party_name} gives compute permissions on their secret to Alice's user_id: {args.user_id_1}"
         )
 
-        receipt_store = await pay(
+        receipt_store = await get_quote_and_pay(
             client_n,
             nillion.Operation.store_values(stored_secret, ttl_days=5),
             payments_wallet_n,

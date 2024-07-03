@@ -5,7 +5,7 @@ import pytest
 from py_nillion_client import NodeKey, UserKey
 from dotenv import load_dotenv
 
-from nillion_python_helpers import pay, create_nillion_client, create_payments_config
+from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
 #home = os.getenv("HOME")
 #load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")

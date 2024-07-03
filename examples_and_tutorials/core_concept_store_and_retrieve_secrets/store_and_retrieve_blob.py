@@ -9,7 +9,7 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-from nillion_python_helpers import pay, create_nillion_client, create_payments_config
+from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
@@ -52,7 +52,7 @@ async def main():
     permissions = nillion.Permissions.default_for_user(client.user_id)
 
     # Get cost quote, then pay for operation to store the secret
-    receipt_store = await pay(
+    receipt_store = await get_quote_and_pay(
         client,
         nillion.Operation.store_values(stored_secret, ttl_days=5),
         payments_wallet,
@@ -71,7 +71,7 @@ async def main():
     print("-----RETRIEVE SECRET")
 
     # Get cost quote, then pay for operation to retrieve the secret
-    receipt_retrieve = await pay(
+    receipt_retrieve = await get_quote_and_pay(
         client,
         nillion.Operation.retrieve_value(),
         payments_wallet,

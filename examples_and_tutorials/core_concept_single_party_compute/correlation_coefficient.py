@@ -22,7 +22,7 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-from nillion_python_helpers import pay, create_nillion_client, create_payments_config
+from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
@@ -53,7 +53,7 @@ async def main():
     )
 
     # Pay to store the program
-    receipt_store_program = await pay(
+    receipt_store_program = await get_quote_and_pay(
         client,
         nillion.Operation.store_program(program_mir_path),
         payments_wallet,
@@ -114,7 +114,7 @@ async def main():
     print(f"Storing party 0: {party_0_secrets}")
 
     # Get cost quote, then pay for operation to store the secret
-    receipt_store_0 = await pay(
+    receipt_store_0 = await get_quote_and_pay(
         client,
         nillion.Operation.store_values(party_0_secrets),
         payments_wallet,
@@ -128,7 +128,7 @@ async def main():
     store_ids.append(store_id)
     print(f"Stored party 0 with store_id ={store_id}")
 
-    receipt_store_1 = await pay(
+    receipt_store_1 = await get_quote_and_pay(
         client,
         nillion.Operation.store_values(party_1_secrets),
         payments_wallet,
@@ -154,7 +154,7 @@ async def main():
     print(f"Use secret store_id: {store_id}")
 
     # Get cost quote, then pay for operation to compute
-    receipt_compute = await pay(
+    receipt_compute = await get_quote_and_pay(
         client,
         nillion.Operation.compute(program_id, computation_time_secrets),
         payments_wallet,

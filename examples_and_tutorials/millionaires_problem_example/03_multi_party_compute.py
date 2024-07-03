@@ -18,7 +18,7 @@ from config import CONFIG_PARTY_1, CONFIG_N_PARTIES
 store_secret_party_1 = importlib.import_module("01_store_secret_party1")
 store_secret_party_n = importlib.import_module("02_store_secret_party_n")
 
-from nillion_python_helpers import pay, create_nillion_client, create_payments_config
+from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
@@ -96,7 +96,7 @@ async def main(args=None):
     )
 
     # Pay for the compute
-    receipt_compute = await pay(
+    receipt_compute = await get_quote_and_pay(
         client_alice,
         nillion.Operation.compute(args.program_id, compute_time_secrets),
         payments_wallet,

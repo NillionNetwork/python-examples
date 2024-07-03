@@ -11,7 +11,7 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-from nillion_python_helpers import pay, create_nillion_client, create_payments_config
+from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
 #home = os.getenv("HOME")
 #load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
@@ -84,7 +84,7 @@ async def main(args=None):
     compute_time_secrets = nillion.NadaValues({})
 
     # Get cost quote, then pay for operation to compute
-    receipt_compute = await pay(
+    receipt_compute = await get_quote_and_pay(
         client_1,
         nillion.Operation.compute(program_id, compute_time_secrets),
         payments_wallet,

@@ -16,7 +16,7 @@ from cosmpy.crypto.keypairs import PrivateKey
 
 from py_nillion_client import NodeKey, UserKey
 
-from nillion_python_helpers import pay, create_nillion_client, create_payments_config
+from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
@@ -114,7 +114,7 @@ async def main():
         )
 
     # Get cost quote, then pay for operation to store program
-    receipt_store_program = await pay(
+    receipt_store_program = await get_quote_and_pay(
         client_alice,
         nillion.Operation.store_program(program_mir_path),
         payments_wallet,

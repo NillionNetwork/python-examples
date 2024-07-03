@@ -11,7 +11,7 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-from nillion_python_helpers import pay, create_nillion_client, create_payments_config
+from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
@@ -39,7 +39,7 @@ async def main():
     )
 
     # Pay to store the program
-    receipt_store_program = await pay(
+    receipt_store_program = await get_quote_and_pay(
         client,
         nillion.Operation.store_program(program_mir_path),
         payments_wallet,
@@ -72,7 +72,7 @@ async def main():
         }
     )
 
-    receipt_store = await pay(
+    receipt_store = await get_quote_and_pay(
         client,
         nillion.Operation.store_values(stored_secret, ttl_days=5),
         payments_wallet,
@@ -102,7 +102,7 @@ async def main():
     )
 
     # Pay for the compute
-    receipt_compute = await pay(
+    receipt_compute = await get_quote_and_pay(
         client,
         nillion.Operation.compute(program_id, computation_time_secrets),
         payments_wallet,

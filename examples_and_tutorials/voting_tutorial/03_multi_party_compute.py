@@ -16,7 +16,7 @@ from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-from nillion_python_helpers import pay, create_nillion_client, create_payments_config
+from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
 from digest_result import (
     digest_plurality_vote_honest_result,
@@ -119,7 +119,7 @@ async def main():
     compute_bindings.add_output_party("OutParty", party_id_alice)
 
     # Get cost quote, then pay for operation to compute
-    receipt_compute = await pay(
+    receipt_compute = await get_quote_and_pay(
         client_alice,
         nillion.Operation.compute(args.program_id, compute_time_secrets),
         payments_wallet,
