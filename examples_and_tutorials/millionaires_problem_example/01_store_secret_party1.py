@@ -17,7 +17,6 @@ load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 # Alice stores the millionaires program in the network
 async def main():
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
-    print(cluster_id)
     grpc_endpoint = os.getenv("NILLION_NILCHAIN_GRPC")
     chain_id = os.getenv("NILLION_NILCHAIN_CHAIN_ID")
     seed = "alice_seed"

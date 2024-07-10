@@ -7,11 +7,8 @@ from dotenv import load_dotenv
 
 from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
-#home = os.getenv("HOME")
-#load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
-
-load_dotenv()
-
+home = os.getenv("HOME")
+load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
 async def main():
     seed_1 = "seed_1"

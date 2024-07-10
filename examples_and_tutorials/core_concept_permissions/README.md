@@ -1,6 +1,6 @@
 ### Run permissions examples (storing and retrieving permissioned secrets, revoking permissions)
 
-Before running through examples, `./bootstrap-local-environment.sh` creates user keys for the secret writer and for the reader who the writer will allow to read the secret. Permissions examples are labeled 1-5:
+Before running through examples, ensure you have run `nillion-devnet` (in this case the examples will pull the correct confgis from the `.env` file stored on your machine by the devnet), or you are inputting the real testnet configs through an `.env` file you set up.
 
 1. The reader fetches their user id
 2. The writer stores a secret and gives the reader retrieve permissions on the secret based on the reader's user id, resulting in a store id for the secret

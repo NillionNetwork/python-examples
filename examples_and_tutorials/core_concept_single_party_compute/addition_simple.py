@@ -17,7 +17,6 @@ load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 # 1 Party running simple addition on 1 stored secret and 1 compute time secret
 async def main():
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
-    print(cluster_id)
     grpc_endpoint = os.getenv("NILLION_NILCHAIN_GRPC")
     chain_id = os.getenv("NILLION_NILCHAIN_CHAIN_ID")
     seed = "my_seed"

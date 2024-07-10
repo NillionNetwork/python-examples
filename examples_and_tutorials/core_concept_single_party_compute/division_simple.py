@@ -104,10 +104,9 @@ async def main():
         cluster_id,
         compute_bindings,
         [store_id],
-        computation_time_secrets,
         nillion.NadaValues(
             {
-                "my_int3": nillion.PublicInteger(2),
+                "my_int3": nillion.Integer(2),
             }
         ),
         receipt_compute,

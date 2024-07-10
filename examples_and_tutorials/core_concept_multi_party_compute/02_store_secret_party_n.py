@@ -12,13 +12,10 @@ from cosmpy.crypto.keypairs import PrivateKey
 
 from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 
-#home = os.getenv("HOME")
-#load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
-
-load_dotenv()
+home = os.getenv("HOME")
+load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
 from config import CONFIG_PROGRAM_NAME, CONFIG_N_PARTIES
-
 
 # N other parties store a secret
 async def main(args=None):

@@ -1,20 +1,17 @@
 import asyncio
 import py_nillion_client as nillion
 import os
-import sys
 import pytest
 
-from nillion import NodeKey, UserKey
+from py_nillion_client import NodeKey, UserKey
 from nillion_python_helpers import get_quote_and_pay, create_nillion_client, create_payments_config
 from dotenv import load_dotenv
 from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-#home = os.getenv("HOME")
-#load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
-
-load_dotenv()
+home = os.getenv("HOME")
+load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
 # Store and retrieve a SecretInteger using the Python Client
 async def main():

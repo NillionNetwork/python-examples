@@ -1,11 +1,4 @@
 import os
-import py_nillion_client as nillion
-from py_nillion_client import NodeKey, UserKey
-from dotenv import load_dotenv
-
-load_dotenv(
-    "/Users/davidtbutler/Library/Application Support/nillion.nillion/nillion-devnet.env"
-)
 
 # Alice
 CONFIG_PARTY_1 = {
