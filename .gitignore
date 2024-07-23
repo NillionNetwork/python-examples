@@ -2,7 +2,7 @@
 **/__pycache__
 nillion-venv/
 permissions/.nillion-config.json
-examples_and_tutorials/nada_programs/target
+examples_and_tutorials/nada_programs/target/*.bin
 quickstart_complete/nada_programs/target
 .env
 .DS_Store
