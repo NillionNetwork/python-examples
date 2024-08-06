@@ -1,6 +1,5 @@
 from nada_dsl import *
 
-
 def nada_main():
     party1 = Party(name="Party1")
     A = SecretInteger(Input(name="A", party=party1))
