@@ -73,8 +73,9 @@ def nada_main():
     # If sign == true, sign is positive
     #            else, sign is negative
     sign = n_times_sum_xy > sum_x_times_sum_y
+    sign_result = sign.if_else(Integer(1), Integer(-1))
 
     return [
         (Output(r2, "correlation_coefficient_squared", outparty)),
-        (Output(sign, "sign", outparty)),
+        (Output(sign_result, "sign", outparty)),
     ]

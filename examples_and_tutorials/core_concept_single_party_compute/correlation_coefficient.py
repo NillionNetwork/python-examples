@@ -116,7 +116,7 @@ async def main():
     # Get cost quote, then pay for operation to store the secret
     receipt_store_0 = await get_quote_and_pay(
         client,
-        nillion.Operation.store_values(party_0_secrets),
+        nillion.Operation.store_values(party_0_secrets, ttl_days=5),
         payments_wallet,
         payments_client,
         cluster_id,
@@ -130,7 +130,7 @@ async def main():
 
     receipt_store_1 = await get_quote_and_pay(
         client,
-        nillion.Operation.store_values(party_1_secrets),
+        nillion.Operation.store_values(party_1_secrets, ttl_days=5),
         payments_wallet,
         payments_client,
         cluster_id,
