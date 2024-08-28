@@ -1,12 +1,9 @@
 ---
 program: reuse_simple_sub_multi_party
 inputs:
-  secrets:
-    my_int1:
-      SecretInteger: "3"
-    my_int2:
-      SecretInteger: "10"
-  public_variables: {}
+  
+    my_int1: 3
+    my_int2: 10
+  
 expected_outputs:
-  my_output:
-    SecretInteger: "-91"
+  my_output: -91

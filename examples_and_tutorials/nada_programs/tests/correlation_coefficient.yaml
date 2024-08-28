@@ -1,90 +1,46 @@
 ---
 program: correlation_coefficient
 inputs:
-  secrets:
-    x7:
-      SecretInteger: "3"
-    y5:
-      SecretInteger: "3"
-    y2:
-      SecretInteger: "1"
-    y6:
-      SecretInteger: "3"
-    x14:
-      SecretInteger: "4"
-    y14:
-      SecretInteger: "3"
-    x16:
-      SecretInteger: "6"
-    x6:
-      SecretInteger: "3"
-    x13:
-      SecretInteger: "2"
-    y3:
-      SecretInteger: "3"
-    y8:
-      SecretInteger: "3"
-    x9:
-      SecretInteger: "45"
-    x15:
-      SecretInteger: "3"
-    y16:
-      SecretInteger: "8"
-    y1:
-      SecretInteger: "42"
-    y7:
-      SecretInteger: "3"
-    x12:
-      SecretInteger: "3"
-    x4:
-      SecretInteger: "3"
-    x5:
-      SecretInteger: "3"
-    x19:
-      SecretInteger: "3"
-    y13:
-      SecretInteger: "3"
-    y17:
-      SecretInteger: "3"
-    x2:
-      SecretInteger: "3"
-    x8:
-      SecretInteger: "3"
-    y9:
-      SecretInteger: "3"
-    x10:
-      SecretInteger: "3"
-    y12:
-      SecretInteger: "3"
-    x1:
-      SecretInteger: "3"
-    y4:
-      SecretInteger: "3"
-    x18:
-      SecretInteger: "3"
-    y15:
-      SecretInteger: "67"
-    y19:
-      SecretInteger: "3"
-    x3:
-      SecretInteger: "3"
-    x0:
-      SecretInteger: "3"
-    y10:
-      SecretInteger: "3"
-    x11:
-      SecretInteger: "3"
-    y0:
-      SecretInteger: "4"
-    y11:
-      SecretInteger: "3"
-    x17:
-      SecretInteger: "3"
-    y18:
-      SecretInteger: "3"
-  public_variables: {}
-expected_outputs:
-  correlation_coefficient_squared:
-    SecretInteger: "52437031009678720685790412"
-  sign:
-    SecretBoolean: false
+  x7: 3
+  y5: 3
+  y2: 1
+  y6: 3
+  x14: 4
+  y14: 3
+  x16: 6
+  x6: 3
+  x13: 2
+  y3: 3
+  y8: 3
+  x9: 10
+  x15: 3
+  y16: 8
+  y1: 10
+  y7: 3
+  x12: 3
+  x4: 3
+  x5: 3
+  x19: 3
+  y13: 3
+  y17: 3
+  x2: 3
+  x8: 3
+  y9: 3
+  x10: 3
+  y12: 3
+  x1: 3
+  y4: 3
+  x18: 3
+  y15: 10
+  y19: 3
+  x3: 3
+  x0: 3
+  y10: 3
+  x11: 3
+  y0: 4
+  y11: 3
+  x17: 3
+  y18: 3
+expected_outputs: 
+  correlation_coefficient_squared: 585
+  sign: 1
