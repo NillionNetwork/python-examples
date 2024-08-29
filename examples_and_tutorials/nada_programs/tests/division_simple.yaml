@@ -1,7 +1,7 @@
 ---
 program: division_simple
 inputs:
-    my_int1: 18
-    my_int3: 6
+  my_int1: 18
+  my_int3: 6
 expected_outputs:
   my_output: 3

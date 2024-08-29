@@ -1,9 +1,7 @@
 ---
 program: reuse_simple_sub_multi_party
 inputs:
-  
-    my_int1: 3
-    my_int2: 10
-  
+  my_int1: 3
+  my_int2: 10
 expected_outputs:
   my_output: -91

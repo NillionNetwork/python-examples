@@ -1,9 +1,7 @@
 ---
 program: nada_fn_max
 inputs:
-  
-    my_int1: 10
-    my_int2: 3
-  
+  my_int1: 10
+  my_int2: 3
 expected_outputs:
   my_output: 10

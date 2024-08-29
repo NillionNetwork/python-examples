@@ -1,14 +1,12 @@
 ---
 program: voting_honest_1
 inputs:
-  
-    v1_c0: 3
-    v2_c0: 3
-    v2_c1: 3
-    v0_c0: 3
-    v0_c1: 3
-    v1_c1: 3
-  
+  v1_c0: 3
+  v2_c0: 3
+  v2_c1: 3
+  v0_c0: 3
+  v0_c1: 3
+  v1_c1: 3
 expected_outputs:
   final_vote_count_c0: 9
   final_vote_count_c1: 9

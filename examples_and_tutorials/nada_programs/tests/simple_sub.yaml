@@ -1,11 +1,9 @@
 ---
 program: simple_sub
 inputs:
-  
-    D: 3
-    A: 3
-    B: 3
-    C: 10
-  
+  D: 3
+  A: 3
+  B: 3
+  C: 10
 expected_outputs:
   O: -21

@@ -1,12 +1,12 @@
 ---
 program: voting_dishonest_robust_6
 inputs:
-    v2_c0: 3
-    v2_c1: 3
-    v0_c1: 3
-    v0_c0: 3
-    v1_c1: 3
-    v1_c0: 3
+  v2_c0: 3
+  v2_c1: 3
+  v0_c1: 3
+  v0_c0: 3
+  v1_c1: 3
+  v1_c0: 3
 expected_outputs:
   if_prod_cheat_open_v1_c0: 3
   check_prod_v2_c1: 2

@@ -1,7 +1,7 @@
 ---
 program: literals
 inputs:
-    A: 3
-    C: 3
+  A: 3
+  C: 3
 expected_outputs:
   O: 915

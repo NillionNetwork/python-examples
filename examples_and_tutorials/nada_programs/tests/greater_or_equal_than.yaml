@@ -1,9 +1,9 @@
 ---
 program: greater_or_equal_than
 inputs:
-    C: 3
-    D: 3
-    B: 3
-    A: 3
+  C: 3
+  D: 3
+  B: 3
+  A: 3
 expected_outputs:
   my_output: true

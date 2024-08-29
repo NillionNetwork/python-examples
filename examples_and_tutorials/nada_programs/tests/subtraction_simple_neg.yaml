@@ -1,9 +1,7 @@
 ---
 program: subtraction_simple_neg
 inputs:
-  
-    my_int2: 3
-    my_int4: 10
-  
+  my_int2: 3
+  my_int4: 10
 expected_outputs:
   my_output: -7

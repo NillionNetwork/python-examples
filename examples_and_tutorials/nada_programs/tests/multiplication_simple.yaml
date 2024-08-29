@@ -1,9 +1,7 @@
 ---
 program: multiplication_simple
 inputs:
-  
-    my_int1: 3
-    my_int2: 3
-  
+  my_int1: 3
+  my_int2: 3
 expected_outputs:
   my_output: 9

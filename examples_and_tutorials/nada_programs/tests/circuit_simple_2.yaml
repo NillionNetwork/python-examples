@@ -1,14 +1,14 @@
 ---
 program: circuit_simple_2
 inputs:
-    D: 3
-    A: 3
-    F: 3
-    G: 3
-    E: 3
-    B: 3
-    H: 3
-    C: 3
-    I: 3
+  D: 3
+  A: 3
+  F: 3
+  G: 3
+  E: 3
+  B: 3
+  H: 3
+  C: 3
+  I: 3
 expected_outputs:
   my_output: 66

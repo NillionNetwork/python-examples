@@ -1,11 +1,9 @@
 ---
 program: public_variables
 inputs:
-  
-    A: 3
-    C: 3
-  
-    B: 3
-    D: 3
+  A: 3
+  C: 3
+  B: 3
+  D: 3
 expected_outputs:
   O: 30

@@ -1,8 +1,8 @@
 ---
 program: millionaires
 inputs:
-    alice_salary: 3
-    bob_salary: 5
-    charlie_salary: 10
+  alice_salary: 3
+  bob_salary: 5
+  charlie_salary: 10
 expected_outputs:
   largest_position: 2

@@ -1,7 +1,7 @@
 ---
 program: modulo_simple
 inputs:
-    my_int1: 3
-    public_my_int2: 6
+  my_int1: 3
+  public_my_int2: 6
 expected_outputs:
   my_output: 3

@@ -1,10 +1,8 @@
 ---
 program: reuse
 inputs:
-
-    B: 3
-    A: 3
-    C: 3
-  
+  B: 3
+  A: 3
+  C: 3
 expected_outputs:
   R: 18
