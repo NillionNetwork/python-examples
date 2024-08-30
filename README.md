@@ -9,3 +9,42 @@ This repo contains examples to go along with the Nillion Python Client docs: htt
 - millionaires_problem_example - An example of Multi Party Compute with the Millionaires Problem Example
 - nada_programs - Single and multi party Nada programs and tests
 - voting_tutorial - An example of Multi Party Compute with voting examples
+
+## Using this repo
+
+### Install dependencies
+
+```
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Compile programs
+
+From the repo root:
+
+```
+cd examples_and_tutorials/nada_programs
+nada build
+```
+
+### Run the nillion-devnet
+
+```
+nillion-devnet
+```
+
+This writes an Nillion config environment file to your local machine that is used in examples: `load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")`
+
+Keep the devnet running in your terminal.
+
+### Run examples
+
+Open another terminal and navigate to `examples_and_tutorials`, which holds all examples. From the repo root:
+
+```
+cd examples_and_tutorials
+```
+
+Run any examples.
