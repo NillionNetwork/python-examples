@@ -52,6 +52,22 @@ async def main(args=None):
         prefix="nillion",
     )
 
+
+    # Retrieve current permissions for secret
+    receipt_retrieve_permissions = await get_quote_and_pay(
+        writer,
+        nillion.Operation.retrieve_permissions(),
+        payments_wallet,
+        payments_client,
+        cluster_id,
+    )
+
+    current_permissions = await writer.retrieve_permissions(cluster_id, args.store_id, receipt_retrieve_permissions)
+
+    reader_permissions_before = current_permissions.is_retrieve_allowed(args.revoked_user_id)
+    if reader_permissions_before == False:
+        raise Exception("Reader should still have permissions to retrieve")
+
     # Create new permissions object to rewrite permissions (reader no longer has retrieve permission)
     new_permissions = nillion.Permissions.default_for_user(writer.user_id)
     result = (
@@ -80,6 +96,22 @@ async def main(args=None):
     await writer.update_permissions(
         cluster_id, args.store_id, new_permissions, receipt_update_permissions
     )
+
+
+    # Retrieve current permissions for secret
+    receipt_retrieve_permissions = await get_quote_and_pay(
+        writer,
+        nillion.Operation.retrieve_permissions(),
+        payments_wallet,
+        payments_client,
+        cluster_id,
+    )
+
+    current_permissions = await writer.retrieve_permissions(cluster_id, args.store_id, receipt_retrieve_permissions)
+
+    reader_permissions_after = current_permissions.is_retrieve_allowed(args.revoked_user_id)
+    if reader_permissions_after == True:
+        raise Exception("Reader should no longer have permissions to retrieve the secret")
 
     print(
         "\n\nRun the following command to test that permissions have been properly revoked"
