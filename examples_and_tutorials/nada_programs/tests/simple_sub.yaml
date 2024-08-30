@@ -1,16 +1,9 @@
 ---
 program: simple_sub
 inputs:
-  secrets:
-    D:
-      SecretInteger: "3"
-    A:
-      SecretInteger: "3"
-    B:
-      SecretInteger: "3"
-    C:
-      SecretInteger: "10"
-  public_variables: {}
+  D: 3
+  A: 3
+  B: 3
+  C: 10
 expected_outputs:
-  O:
-    SecretInteger: "-21"
+  O: -21

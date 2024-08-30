@@ -1,12 +1,7 @@
 ---
 program: division_simple
 inputs:
-  secrets:
-    my_int1:
-      SecretInteger: "18"
-  public_variables:
-    my_int3:
-      Integer: "6"
+  my_int1: 18
+  my_int3: 6
 expected_outputs:
-  my_output:
-    SecretInteger: "3"
+  my_output: 3

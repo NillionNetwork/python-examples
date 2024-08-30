@@ -28,7 +28,6 @@ from digest_result import (
 home = os.getenv("HOME")
 load_dotenv(f"{home}/.config/nillion/nillion-devnet.env")
 
-
 async def main():
 
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
@@ -245,7 +244,7 @@ async def main():
         # Get cost quote, then pay for operation to store the secret
         receipt_store = await get_quote_and_pay(
             voter_v,
-            nillion.Operation.store_values(v_to_be_store_values),
+            nillion.Operation.store_values(v_to_be_store_values, ttl_days=5),
             general_payments_wallet,
             general_payments_client,
             cluster_id,

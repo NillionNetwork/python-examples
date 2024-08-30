@@ -1,26 +1,14 @@
 ---
 program: circuit_simple_2
 inputs:
-  secrets:
-    D:
-      SecretInteger: "3"
-    A:
-      SecretInteger: "3"
-    F:
-      SecretInteger: "3"
-    G:
-      SecretInteger: "3"
-    E:
-      SecretInteger: "3"
-    B:
-      SecretInteger: "3"
-    H:
-      SecretInteger: "3"
-    C:
-      SecretInteger: "3"
-    I:
-      SecretInteger: "3"
-  public_variables: {}
+  D: 3
+  A: 3
+  F: 3
+  G: 3
+  E: 3
+  B: 3
+  H: 3
+  C: 3
+  I: 3
 expected_outputs:
-  my_output:
-    SecretInteger: "66"
+  my_output: 66
