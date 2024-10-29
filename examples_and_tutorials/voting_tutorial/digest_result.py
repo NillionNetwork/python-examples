@@ -1,5 +1,4 @@
 def digest_plurality_vote_honest_result(dict_result, nr_candidates, nr_voters):
-
     # TODO: complete there the code to digest the output of the honest version
 
     print(
@@ -12,7 +11,6 @@ def digest_plurality_vote_honest_result(dict_result, nr_candidates, nr_voters):
 def digest_plurality_vote_dishonest_with_abort_result(
     dict_result, nr_candidates, nr_voters
 ):
-
     # TODO: complete there the code to digest the output of the dishonest with abort version
 
     print(
@@ -57,7 +55,7 @@ def digest_plurality_vote_robust_result(dict_result, nr_candidates, nr_voters):
     votes_per_candidate = []
     for c in range(nr_candidates):
         # read nr of votes for candidate 'c'
-        votes_per_candidate.append(dict_result["final_vote_count_c" + str(c)])
+        votes_per_candidate.append(dict_result["final_vote_count_c" + str(c)].value)
     # revert action of cheaters for all candidates
     for cheater in set_of_cheaters:
         # if sum rule was broken
@@ -65,13 +63,13 @@ def digest_plurality_vote_robust_result(dict_result, nr_candidates, nr_voters):
             for c in range(nr_candidates):
                 votes_per_candidate[c] -= dict_result[
                     "if_sum_cheat_open_v" + str(cheater) + "_c" + str(c)
-                ]
+                ].value
         # if product rule was broken
         else:
             for c in range(nr_candidates):
                 votes_per_candidate[c] -= dict_result[
                     "if_prod_cheat_open_v" + str(cheater) + "_c" + str(c)
-                ]
+                ].value
 
     # define winner
     winner = max(range(len(votes_per_candidate)), key=lambda i: votes_per_candidate[i])
