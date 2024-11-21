@@ -65,12 +65,12 @@ python3 01_store_secret_party1.py
 - Bob and Charlie store their VOTES in the network as secrets. Each secret is stored with
   - **bindings** to the voting program id.
   - **permissions** so Alice (the owner) can compute using the secret.
-- Bob and Charlie each share their `party_id` and secret `store_id` with Alice.
+- Bob and Charlie each share their `user_id` and secret `values_id` with Alice.
 
 The script will provide the command to perform step 2.
 
 ```bash
-python3 02_store_secret_party_n.py --user_id_1 {user_id} --program_id {program_id}
+python3 02_store_secret_party_n.py --user_id_1 {user_id} --program_id {program_id} --program_name {program_name}
 ```
 
 ### Step 3
@@ -81,7 +81,8 @@ python3 02_store_secret_party_n.py --user_id_1 {user_id} --program_id {program_i
 The script will provide the command to perform step 3.
 
 ```bash
-python3 03_multi_party_compute.py --program_id {program_id} --party_ids_to_store_ids {party_ids_to_store_ids}
+python3 03_multi_party_compute.py --program_id {program_id} --user_ids_to_value_ids {user_ids_to_value_ids} \
+--program_name {program_name}
 ```
 
 Also, we present a function [`digest_plurality_vote_robust_result()`](digest_result.py) that digests the result output by the [voting_dishonest_robust_6.py](../nada_programs/src/voting_dishonest_robust_6.py).

@@ -1,9 +1,11 @@
+import hashlib
+
 # replace this with your name
 CONFIG_PROGRAM_NAME = "addition_simple_multi_party"
 
 # 1st party
 CONFIG_PARTY_1 = {
-    "seed": "party_1_seed",
+    "private_key": hashlib.sha256(b"party_1_seed").digest(),
     "party_name": "Party1",
     "secrets": {
         "my_int1": 1,
@@ -13,13 +15,13 @@ CONFIG_PARTY_1 = {
 # N other parties
 CONFIG_N_PARTIES = [
     {
-        "seed": "party_2_seed",
+        "private_key": hashlib.sha256(b"party_2_seed").digest(),
         "party_name": "Party2",
         "secret_name": "my_int2",
         "secret_value": 5,
     },
     {
-        "seed": "party_3_seed",
+        "private_key": hashlib.sha256(b"party_3_seed").digest(),
         "party_name": "Party3",
         "secret_name": "my_int3",
         "secret_value": 2,

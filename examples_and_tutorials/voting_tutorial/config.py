@@ -1,3 +1,5 @@
+import hashlib
+
 CONFIG = {
     "nr_candidates": 2,
     "nr_voters": 3,
@@ -8,7 +10,7 @@ CONFIG_CANDIDATES = ["Dave", "Emma"]
 
 # Alice
 CONFIG_PARTY_1 = {
-    "seed": "alice_seed",
+    "private_key": hashlib.sha256(b"alice_seed").digest(),
     "party_name": "Alice",
     "party_role": "Voter0",
     "secret_votes": {
@@ -20,7 +22,7 @@ CONFIG_PARTY_1 = {
 # Bob and Charlie
 CONFIG_N_PARTIES = [
     {
-        "seed": "bob_seed",
+        "private_key": hashlib.sha256(b"bob_seed").digest(),
         "party_name": "Bob",
         "party_role": "Voter1",
         "secret_votes": {
@@ -29,7 +31,7 @@ CONFIG_N_PARTIES = [
         },
     },
     {
-        "seed": "charlie_seed",
+        "private_key": hashlib.sha256(b"charlie_seed").digest(),
         "party_name": "Charlie",
         "party_role": "Voter2",
         "secret_votes": {

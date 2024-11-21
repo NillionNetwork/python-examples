@@ -24,7 +24,7 @@ Also ensure the millionaire's program is compiled.
 Run the command to perform step 1.
 
 ```bash
-python3 01_store_secret_party1.py
+python3 01_store_program.py
 ```
 
 ### Step 2
@@ -48,5 +48,5 @@ python3 02_store_secret_party_n.py --user_id_1 {user_id} --program_id {program_i
 The script will provide the command to perform step 3.
 
 ```bash
-python3 03_multi_party_compute.py --program_id {program_id} --party_ids_to_store_ids {party_ids_to_store_ids}
+python3 03_multi_party_compute.py --program_id {program_id} --user_ids_to_values_ids {user_ids_to_values_ids}
 ```

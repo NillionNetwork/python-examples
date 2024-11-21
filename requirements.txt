@@ -1,6 +1,4 @@
-py-nillion-client
+nillion-client
 nada-dsl
-nillion-python-helpers
 python-dotenv==1.0.0
 pytest-asyncio>=0.23.6
-cosmpy>=0.9.2
