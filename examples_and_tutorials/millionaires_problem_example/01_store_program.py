@@ -32,6 +32,11 @@ async def main():
     signing_key = PrivateKey(CONFIG_PARTY_1["private_key"])
     client = await VmClient.create(signing_key, network, payer)
 
+    # Adding funds to the client balance so the upcoming operations can be paid for
+    funds_amount = 1000
+    print(f"💰  Adding some funds to the client balance: {funds_amount}")
+    await client.add_funds(funds_amount)
+
     # Store millionaires program in the network
     millionaires_program_name = "millionaires"
     program_mir_path = f"../nada_programs/target/{millionaires_program_name}.nada.bin"

@@ -137,7 +137,10 @@ async def main():
     print("Waiting for computation response...")
     result = await client.retrieve_compute_results(compute_id).invoke()
     print(f"✅  Compute complete for compute_id {compute_id}")
-    print(f"🖥️  The output result is {result}\n")
+    print(f"🖥️  The output result is {result}")
+    balance = await client.balance()
+    print(f"💰  Final client balance: {balance.balance}\n")
+    client.close()
 
     # Digest the result
     program_name = args.program_name

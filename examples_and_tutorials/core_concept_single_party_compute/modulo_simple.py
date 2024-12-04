@@ -40,6 +40,11 @@ async def main():
     program_name = "modulo_simple"
     program_mir_path = f"../nada_programs/target/{program_name}.nada.bin"
 
+    # Adding funds to the client balance so the upcoming operations can be paid for
+    funds_amount = 1000
+    print(f"💰  Adding some funds to the client balance: {funds_amount}")
+    await client.add_funds(funds_amount)
+
     # Store program
     program_mir = open(program_mir_path, "rb").read()
     program_id = await client.store_program(program_name, program_mir).invoke()
@@ -85,6 +90,9 @@ async def main():
     result = await client.retrieve_compute_results(compute_id).invoke()
     print(f"✅  Compute complete for compute_id {compute_id}")
     print(f"🖥️  The result is {result}")
+    balance = await client.balance()
+    print(f"💰  Final client balance: {balance.balance}")
+    client.close()
     return result
 
 

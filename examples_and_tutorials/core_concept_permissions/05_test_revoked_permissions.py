@@ -57,12 +57,14 @@ async def main(args=None):
             f"⛔ FAIL: {reader_user_id} user id with revoked permissions was allowed to access secret",
             file=sys.stderr,
         )
+        client.close()
     except GRPCError as e:
         if e.status == Status.PERMISSION_DENIED:
             print(
                 f"🦄 Success: After user permissions were revoked, {reader_user_id} was not allowed to access secret",
                 file=sys.stderr,
             )
+            client.close()
         else:
             raise (e)
 

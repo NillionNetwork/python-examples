@@ -33,6 +33,11 @@ async def main():
     signing_key = PrivateKey()
     client = await VmClient.create(signing_key, network, payer)
 
+    # Adding funds to the client balance so the upcoming operations can be paid for
+    funds_amount = 1000
+    print(f"💰  Adding some funds to the client balance: {funds_amount}")
+    await client.add_funds(funds_amount)
+
     ##### STORE SECRET
     print("-----STORE SECRET")
 
@@ -65,6 +70,9 @@ async def main():
 
     decoded_secret_value = value.value.decode("utf-8")
     print(f"The secret value is '{decoded_secret_value}'")
+    balance = await client.balance()
+    print(f"💰  Final client balance: {balance.balance}")
+    client.close()
     return decoded_secret_value
 
 

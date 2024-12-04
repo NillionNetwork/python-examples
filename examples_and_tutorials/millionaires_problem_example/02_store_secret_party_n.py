@@ -57,12 +57,17 @@ async def main(args=None):
     user_ids = []
 
     for party_info in CONFIG_N_PARTIES:
-        signing_key = PrivateKey()
+        signing_key = PrivateKey(party_info["private_key"])
         client = await VmClient.create(signing_key, network, payer)
 
         party_name = party_info["party_name"]
         secret_name = party_info["secret_name"]
         secret_value = party_info["secret_value"]
+
+        # Adding funds to the client balance so the upcoming operations can be paid for
+        funds_amount = 1000
+        print(f"💰  Adding some funds to the client balance for {party_name}: {funds_amount}")
+        await client.add_funds(funds_amount)
 
         # Create a secret for the current party
         values = {secret_name: SecretInteger(secret_value)}
@@ -84,7 +89,8 @@ async def main(args=None):
         values_ids.append(values_id)
         user_ids.append(client.user_id)
 
-        print(f"\n🎉 {party_name} stored {secret_name}: {secret_value} at: {values_id}")
+        print(f"\n🎉 {party_name} stored {secret_name}: {secret_value} at: {values_id}\n--------------------------------")
+        client.close()
 
     user_ids_to_values_ids = " ".join(
         [f"{user_id}:{values_id}" for user_id, values_id in zip(user_ids, values_ids)]
