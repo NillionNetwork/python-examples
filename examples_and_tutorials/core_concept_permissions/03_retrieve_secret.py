@@ -49,6 +49,11 @@ async def main(args=None):
     reader_user_id = client.user_id
     values_id = UUID(args.values_id)
 
+    # Adding funds to the client balance so the upcoming operations can be paid for
+    funds_amount = 1000
+    print(f"💰  Adding some funds to the client doing the retrieval balance: {funds_amount}")
+    await client.add_funds(funds_amount)
+
     # Reader retrieves the named secret by store id
     print(f"Retrieving secret as reader: {reader_user_id}")
     values = await client.retrieve_values(values_id).invoke()

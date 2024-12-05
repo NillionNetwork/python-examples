@@ -38,6 +38,11 @@ async def main():
     signing_key = PrivateKey()
     client = await VmClient.create(signing_key, network, payer)
 
+    # Adding funds to the client balance so the upcoming operations can be paid for
+    funds_amount = 20000
+    print(f"💰  Adding some funds to the client balance: {funds_amount} uNIL")
+    await client.add_funds(funds_amount)
+
     party_0_name = "Party0"
     party_1_name = "Party1"
     out_party_name = "OutParty"
@@ -126,6 +131,9 @@ async def main():
     sign = 1 if result["sign"].value else -1
     corr_coeff = round(sign * sqrt(corr_coeff_squared), precision)
     print(f"📈  Correlation coefficient = {corr_coeff} with precision {precision}.")
+    balance = await client.balance()
+    print(f"💰  Final client balance: {balance.balance} uNIL")
+    client.close()
     return result
 
 

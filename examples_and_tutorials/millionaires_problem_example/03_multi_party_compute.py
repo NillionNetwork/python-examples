@@ -103,6 +103,10 @@ async def main(args=None):
     print(f"The computation was initiated in the network. compute_id: {compute_id}")
     result = await client.retrieve_compute_results(compute_id).invoke()
     print(f"🖥️  The output result is {result}")
+    print(f"🖥️  The result is {result}")
+    balance = await client.balance()
+    print(f"💰  Final client balance: {balance.balance} uNIL")
+    client.close()
 
     # The compute result is an index
     # Map it to the corresponding party name who should pay for lunch

@@ -37,6 +37,11 @@ async def main():
     user_id = client.user_id
     program_mir_path = f"../nada_programs/target/{CONFIG_PROGRAM_NAME}.nada.bin"
 
+    # Adding funds to the client balance so the upcoming operations can be paid for
+    funds_amount = 1000
+    print(f"💰  Adding some funds to the client balance: {funds_amount} uNIL")
+    await client.add_funds(funds_amount)
+
     # Store the program
     print("Storing program...")
     program = open(program_mir_path, "rb").read()

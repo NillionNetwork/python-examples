@@ -39,6 +39,11 @@ async def main():
     program_name = "addition_simple"
     program_mir_path = f"../nada_programs/target/{program_name}.nada.bin"
 
+    # Adding funds to the client balance so the upcoming operations can be paid for
+    funds_amount = 1000
+    print(f"💰  Adding some funds to the client balance: {funds_amount} uNIL")
+    await client.add_funds(funds_amount)
+
     ##### STORE PROGRAM
     print("-----STORE PROGRAM")
 
@@ -67,6 +72,9 @@ async def main():
         values, ttl_days=5, permissions=permissions
     ).invoke()
 
+    # Print details about stored program
+    print(f"Stored secret values_id: {values_id}")
+
     ##### COMPUTE
     print("-----COMPUTE")
 
@@ -78,7 +86,7 @@ async def main():
     compute_time_values = {"my_int2": SecretInteger(10)}
 
     # Compute, passing in the compute time values as well as the previously uploaded value.
-    print(f"Invoking computation using program {program_id} and values id {values_id}")
+    print(f"Invoking computation using program_id: {program_id} and secret values_id: {values_id}")
     compute_id = await client.compute(
         program_id,
         input_bindings,
@@ -92,6 +100,9 @@ async def main():
     result = await client.retrieve_compute_results(compute_id).invoke()
     print(f"✅  Compute complete for compute_id {compute_id}")
     print(f"🖥️  The result is {result}")
+    balance = await client.balance()
+    print(f"💰  Final client balance: {balance.balance} uNIL")
+    client.close()
     return result
 
 

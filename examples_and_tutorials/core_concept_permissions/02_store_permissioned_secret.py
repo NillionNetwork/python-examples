@@ -48,6 +48,11 @@ async def main(args=None):
     signing_key = PrivateKey(hashlib.sha256(b"seed_2").digest())
     client = await VmClient.create(signing_key, network, payer)
 
+    # Adding funds to the client balance so the upcoming operations can be paid for
+    funds_amount = 1000
+    print(f"💰  Adding some funds to the client doing the storing balance: {funds_amount}")
+    await client.add_funds(funds_amount)
+
     # Create secret
     secret_name_1 = "my_int1"
     secret_1 = SecretInteger(10)
