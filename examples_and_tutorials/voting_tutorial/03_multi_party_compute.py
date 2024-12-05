@@ -139,7 +139,7 @@ async def main():
     print(f"✅  Compute complete for compute_id {compute_id}")
     print(f"🖥️  The output result is {result}")
     balance = await client.balance()
-    print(f"💰  Final client balance: {balance.balance}\n")
+    print(f"💰  Final client balance: {balance.balance} uNIL\n")
     client.close()
 
     # Digest the result
