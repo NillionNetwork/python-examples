@@ -64,11 +64,6 @@ async def main(args=None):
         secret_name = party_info["secret_name"]
         secret_value = party_info["secret_value"]
 
-        # Adding funds to the client balance so the upcoming operations can be paid for
-        funds_amount = 1000
-        print(f"💰  Adding some funds to the client balance for {party_name}: {funds_amount}")
-        await client.add_funds(funds_amount)
-
         # Create a secret for the current party
         values = {secret_name: SecretInteger(secret_value)}
 

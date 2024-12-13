@@ -7,6 +7,7 @@
 
 import asyncio
 import os
+from nillion_client.payer import DummyPayer
 from dotenv import load_dotenv
 
 from nillion_client import (
@@ -18,7 +19,7 @@ from nillion_client import (
 )
 
 from config import (
-    CONFIG_PARTY_1,
+    CONFIG_PARTY_1,CONFIG_N_PARTIES
 )
 
 home = os.getenv("HOME")
@@ -102,8 +103,18 @@ async def main():
 
     # Adding funds to the client balance so the upcoming operations can be paid for
     funds_amount = 1000
-    print(f"💰  Adding some funds to the client balance: {funds_amount} uNIL")
+    print(f"💰  Adding some funds to the executor client balance: {funds_amount} uNIL")
     await client.add_funds(funds_amount)
+
+    # Normally, the other party could disclose the user id to us, but we're just going
+    # to build the user_id from our config
+    for party_info in CONFIG_N_PARTIES:
+        other_payer = DummyPayer()
+        other_sk = PrivateKey(party_info["private_key"])
+        other_client = await VmClient.create(other_sk, network, other_payer)
+        reader_user_id = other_client.user_id
+        print(f"🙏  As a paymaster, add some funds to the other client balance: {funds_amount} uNIL")
+        await client.add_funds(funds_amount, target_user=reader_user_id)
 
     #####################################
     # 2. Storing program                #
