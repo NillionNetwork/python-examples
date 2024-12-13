@@ -48,7 +48,6 @@ async def main():
         print(f"🙏  As a paymaster, add some funds to the other client balance: {funds_amount} uNIL")
         await client.add_funds(funds_amount, target_user=reader_user_id)
 
-
     # Store millionaires program in the network
     millionaires_program_name = "millionaires"
     program_mir_path = f"../nada_programs/target/{millionaires_program_name}.nada.bin"

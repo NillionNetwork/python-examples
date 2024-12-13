@@ -83,11 +83,6 @@ async def main():
         party_name = party_info["party_name"]
         secret_votes = party_info["secret_votes"]
 
-        # Adding funds to the client balance so the upcoming operations can be paid for
-        funds_amount = 1000
-        print(f"💰  Adding some funds to the client balance for {party_name}: {funds_amount}")
-        await client.add_funds(funds_amount)
-
         #####################################
         # 4. Storing votes                  #
         #####################################
