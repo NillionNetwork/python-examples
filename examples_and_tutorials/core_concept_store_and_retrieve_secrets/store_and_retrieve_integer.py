@@ -65,7 +65,7 @@ async def main():
 
     print(f"The secret value is {value.value}")
     balance = await client.balance()
-    print(f"💰  Final client balance: {balance.balance} uNIL")
+    print(f"💰  Final client balance: {balance.balance} Credits")
     client.close()
     return value.value
 

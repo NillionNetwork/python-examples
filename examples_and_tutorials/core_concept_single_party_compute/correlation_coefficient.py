@@ -132,7 +132,7 @@ async def main():
     corr_coeff = round(sign * sqrt(corr_coeff_squared), precision)
     print(f"📈  Correlation coefficient = {corr_coeff} with precision {precision}.")
     balance = await client.balance()
-    print(f"💰  Final client balance: {balance.balance} uNIL")
+    print(f"💰  Final client balance: {balance.balance} Credits")
     client.close()
     return result
 

@@ -71,7 +71,7 @@ async def main():
     decoded_secret_value = value.value.decode("utf-8")
     print(f"The secret value is '{decoded_secret_value}'")
     balance = await client.balance()
-    print(f"💰  Final client balance: {balance.balance} uNIL")
+    print(f"💰  Final client balance: {balance.balance} Credits")
     client.close()
     return decoded_secret_value
 

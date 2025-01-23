@@ -1,5 +1,5 @@
 cryptography>=44.0.0
-nillion-client
-nada-dsl
+nillion-client==0.2.0rc2
+nada-dsl==0.8.0rc2
 python-dotenv==1.0.0
 pytest-asyncio>=0.23.6
