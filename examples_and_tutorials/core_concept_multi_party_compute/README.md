@@ -8,5 +8,5 @@ This is an example using the Nillion Python Client to store a program, and run m
 
 2. Ensure the multi party program you want to run (defined in `config.py`) is compiled, by running `nada build` in the `nada_programs` directory.
 
-3. Run the scripts in number order, starting with `01_store_program.py`, check the ouputs of each script to get the 
+3. Run the scripts in number order, starting with `01_store_program.py`, check the outputs of each script to get the 
    inputs to the next.
