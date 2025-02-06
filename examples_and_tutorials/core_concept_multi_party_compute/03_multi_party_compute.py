@@ -99,7 +99,7 @@ async def main(args=None):
     print(f"🖥️  The result is {result}")
     print(f"🖥️  The result is {result}")
     balance = await client.balance()
-    print(f"💰  Final client balance: {balance.balance} uNIL")
+    print(f"💰  Final client balance: {balance.balance} Credits")
     client.close()
     return result
 

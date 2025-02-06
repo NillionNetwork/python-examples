@@ -33,7 +33,7 @@ async def main():
     client = await VmClient.create(signing_key, network, payer)
 
     # Adding funds to the client balance so the upcoming operations can be paid for
-    funds_amount = 1000
+    funds_amount = 3000000
     print(f"💰  Adding some funds to the client balance: {funds_amount} uNIL")
     await client.add_funds(funds_amount)
 
@@ -65,7 +65,7 @@ async def main():
 
     print(f"The secret value is {value.value}")
     balance = await client.balance()
-    print(f"💰  Final client balance: {balance.balance} uNIL")
+    print(f"💰  Final client balance: {balance.balance} Credits")
     client.close()
     return value.value
 

@@ -49,8 +49,8 @@ async def main(args=None):
     client = await VmClient.create(signing_key, network, payer)
 
     # Adding funds to the client balance so the upcoming operations can be paid for
-    funds_amount = 1000
-    print(f"💰  Adding some funds to the client doing the storing balance: {funds_amount}")
+    funds_amount = 5000000
+    print(f"💰  Adding some funds to the client doing the storing balance: {funds_amount} uNil")
     await client.add_funds(funds_amount)
 
     # Create secret

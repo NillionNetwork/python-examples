@@ -50,8 +50,8 @@ async def main(args=None):
     values_id = UUID(args.values_id)
 
     # Adding funds to the client balance so the upcoming operations can be paid for
-    funds_amount = 1000
-    print(f"💰  Adding some funds to the client doing the retrieval balance: {funds_amount}")
+    funds_amount = 5000000
+    print(f"💰  Adding some funds to the client doing the retrieval balance: {funds_amount} uNil")
     await client.add_funds(funds_amount)
 
     # Reader retrieves the named secret by store id
